@@ -1,0 +1,22 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.block {
+    @include block(100px, 100px, #111);
+    p {
+        color: $difficultColor;
+        font-size: 12px;
+    }
+
+    &:nth-child(2) {
+        @include block(110px, 110px, darkred);
+        &:hover {
+            background: blue;
+        }
+        p {
+            color: black;
+        }
+    }
+}

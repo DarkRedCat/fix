@@ -1,0 +1,20 @@
+@mixin marg($marg...) {
+    margin: $marg;
+}
+
+@mixin block($width, $height, $bg) {
+    width: $width;
+    height: $height;
+    background: $bg;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+
+    padding: $padd;
+    @include marg(20px 22px 23px 21px);
+}
+
+@mixin posAbs() {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

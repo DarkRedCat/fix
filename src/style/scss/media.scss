@@ -1,0 +1,7 @@
+@media (max-width: 720px){
+    .block{
+        &:nth-child(2){
+            @include block (90px , 90px, blue);
+        }
+    }
+}

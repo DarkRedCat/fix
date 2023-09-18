@@ -1,0 +1,40 @@
+.main_page__body {
+    display: flex;
+    font-family: "Futura", sans-serif;
+}
+
+.main_page__body-content,
+.category_page__body {
+    padding: $padd * 4;
+    text-align: center;
+    @include posAbs();
+    position: relative;
+}
+.main_page__body-content > span {
+    padding: 9px 15px;
+    margin-left: 5px;
+    color: $w;
+    background: $b;
+}
+.main_page__body-content > p {
+    display: inline-block;
+}
+.main_page,
+.category_page {
+    min-height: calc(100vh - 206px);
+}
+.category_page_container {
+    display: flex;
+    width: 95%;
+    height: auto;
+
+    flex-wrap: wrap;
+    @include posAbs();
+    position: relative;
+}
+.main_page__footer {
+    background-color: $b;
+}
+.no_scroll {
+    overflow: hidden;
+}

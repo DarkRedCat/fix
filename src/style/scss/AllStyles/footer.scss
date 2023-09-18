@@ -1,0 +1,17 @@
+.footer_list_ul {
+    padding: $padd;
+    display: flex;
+}
+.footer_list_li {
+    padding: $padd;
+    flex: 1;
+    text-align: center;
+    color: $w;
+}
+.footer__container {
+    color: $w;
+}
+.footer_selection-left {
+    width: 50%;
+    float: left;
+}

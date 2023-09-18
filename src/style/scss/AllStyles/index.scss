@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "Futura";
+    src: url("../../../app/font/FuturaLT-Book.woff2");
+    font-weight: 300;
+    font-display: swap;
+    font-style: normal;
+}
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Futura, sans-serif;
+}
+
+html,
+body {
+    scrollbar-width: none;
+}
+
+body {
+    font-family: "Futura", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
