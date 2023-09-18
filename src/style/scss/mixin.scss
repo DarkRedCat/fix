@@ -13,6 +13,7 @@
     @include marg(20px 22px 23px 21px);
 }
 
+
 @mixin posAbs() {
     position: absolute;
     left: 50%;
