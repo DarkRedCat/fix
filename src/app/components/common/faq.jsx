@@ -1,10 +1,10 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useEffect, useState } from "react";
 import { LangContext } from "../../App";
 import { gsap } from "gsap";
 
 const timeline = gsap.timeline({});
 
-const Faq = ({ textData }) => {
+const Faq = ({ textData, black_relocation }) => {
     const langNum = useContext(LangContext);
 
     const lang = (data, dontProdDta) => {
@@ -28,6 +28,7 @@ const Faq = ({ textData }) => {
 
     const tl = useRef(timeline);
     const text = useRef(null);
+    const app = useRef(null);
 
     const animate = (act, num) => {
         if (act !== undefined) {
@@ -54,8 +55,71 @@ const Faq = ({ textData }) => {
         }
     };
 
+    const black_relocation_close_function_first_page_launch = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+
+                .to(".black_relocation", {
+                    duration: 0,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 1.5,
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+
+    const black_relocation_close_function = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+                .to(".black_relocation", {
+                    duration: 0,
+                    opacity: 0,
+                    display: "none"
+                })
+                .to(".black_relocation", {
+                    duration: 0.5,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 1.5,
+
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+    const [red, setRed] = useState(true);
+    useEffect(() => {
+        setRed((prevState) => !prevState);
+    }, [location.pathname.split("/")[1]]);
+
+    useEffect(() => {
+        if (red) {
+            black_relocation_close_function_first_page_launch();
+        } else {
+            black_relocation_close_function();
+        }
+    }, [black_relocation]);
     return (
-        <div className="main_page container">
+        <div className="main_page container containerFaq">
+            <div ref={app}>
+                <div className="black_relocation"></div>
+            </div>
             <div className="faq_page__body">
                 <div className="dropdown dropdown_one" ref={dropdown_one}>
                     <div

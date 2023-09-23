@@ -1,7 +1,7 @@
 {
     "name": "fast-company",
     "version": "0.1.0",
-    "proxy": "https://fix-nu.vercel.app/",
+    "private": true,
     "dependencies": {
         "@reduxjs/toolkit": "^1.7.1",
         "@testing-library/jest-dom": "^5.11.4",

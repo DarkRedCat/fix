@@ -1,8 +1,15 @@
 import React from "react";
 import Body from "../layouts/body";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
-const Сategory = ({ CurrentCurrency, ChangeCurrency, textData }) => {
+const Сategory = ({
+    CurrentCurrency,
+    ChangeCurrency,
+    textData,
+    black_relocation,
+    black_relocation_change,
+    propsYakor
+}) => {
     return (
         <>
             <Switch>
@@ -13,6 +20,9 @@ const Сategory = ({ CurrentCurrency, ChangeCurrency, textData }) => {
                             CurrentCurrency={CurrentCurrency}
                             ChangeCurrency={ChangeCurrency}
                             textData={textData}
+                            black_relocation={black_relocation}
+                            black_relocation_change={black_relocation_change}
+                            propsYakor={propsYakor}
                             {...props}
                         />
                     )}

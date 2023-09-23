@@ -2,7 +2,7 @@
     width: 100%;
     padding-top: 38px;
     padding-bottom: 50px;
-    background: $b;
+    background: #111113;
     background-size: cover;
 }
 .header_container__section_1 {
@@ -26,4 +26,12 @@
     select {
         width: 100%;
     }
+}
+.black_relocation_2 {
+    height: calc(100% + 205px);
+    background: #111113;
+    width: 100%;
+    top: -205px;
+    position: absolute;
+    z-index: 100;
 }

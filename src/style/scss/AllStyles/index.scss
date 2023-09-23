@@ -1,14 +1,15 @@
 @font-face {
-    font-family: "Futura";
-    src: url("../../../app/font/FuturaLT-Book.woff2");
-    font-weight: 300;
+    font-family: "Raleway";
+    src: url("../../../app/font/Raleway-VariableFont_wght.ttf");
+    font-weight: 500;
     font-display: swap;
     font-style: normal;
 }
+
 * {
     margin: 0;
     padding: 0;
-    font-family: Futura, sans-serif;
+    font-family: Raleway, sans-serif;
 }
 
 html,
@@ -25,4 +26,63 @@ body {
 body::-webkit-scrollbar {
     width: 0;
     height: 0;
+}
+.mb-4 {
+    label {
+        font-size: 12px;
+        float: left;
+    }
+    div {
+        input {
+            background: white;
+            border: 1px solid #111113;
+            border-radius: 20px;
+            padding: 5px 10px;
+        }
+    }
+    .invalid-feedback {
+        font-size: 12px;
+    }
+    .form-control {
+        width: 80%;
+    }
+}
+.btn-outline-secondary {
+    position: absolute;
+    border: 1px solid #111113;
+    background: white;
+    padding: 5px;
+    right: 15%;
+    border-radius: 0px 20px 20px 0px;
+    background: #111113;
+    & > i {
+        filter: invert(1);
+    }
+}
+.input-group_div {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.input-group {
+    height: 66px;
+}
+.form-check {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    transform: translate(-50%);
+    left: 50%;
+    width: 80%;
+    & > input {
+        order: 2;
+    }
+}
+.btn-primary {
+    border: none;
+    background: #111113;
+    color: white;
+    padding: 7px 32px;
+    border-radius: 20px;
+    margin: 10px 0;
 }

@@ -1,10 +1,18 @@
 .main_page__body {
-    display: flex;
     font-family: "Futura", sans-serif;
 }
-
+.container {
+    background: white;
+}
+.main_page {
+    background: none;
+}
+.main_page__body-content {
+    background: white;
+}
 .main_page__body-content,
 .category_page__body {
+    background: white;
     padding: $padd * 4;
     text-align: center;
     @include posAbs();
@@ -22,6 +30,7 @@
 .main_page,
 .category_page {
     min-height: calc(100vh - 206px);
+    position: relative;
 }
 .category_page_container {
     display: flex;

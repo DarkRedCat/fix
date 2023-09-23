@@ -8,7 +8,6 @@ const Login = ({ data, fun }) => {
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
                     <>
-                        <h3 className="mb-4">Login</h3>
                         <LoginForm textData={data} fun={fun} />
                     </>
                 </div>

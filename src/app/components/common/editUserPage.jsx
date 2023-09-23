@@ -167,7 +167,7 @@ const EditUserPage = () => {
                             </button>
                         </form>
                     ) : (
-                        "Loading..."
+                        ""
                     )}
                 </div>
             </div>

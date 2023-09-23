@@ -1,5 +1,6 @@
 .cat__section_2_ul {
     display: flex;
+    justify-content: space-between;
 }
 .header_container__section_1_center-box {
     width: 225px;
@@ -14,11 +15,15 @@
     margin: 0 30px;
     display: flex;
 }
+.category_page__title {
+    margin: 30px 0;
+}
+
 .cat__section_2_ul > .cat__section_2_li {
     padding: ($padd + 15) $padd 1px $padd;
-    flex: 1;
+
     white-space: nowrap;
-    transition: 0.5s;
+
     text-transform: uppercase;
     text-align: center;
     position: relative;
@@ -66,19 +71,21 @@
     border-radius: 10px;
     background: $w;
     opacity: 0;
+    display: none;
     left: 4px;
     box-shadow: 0 0 30px 0 hsla(228, 6%, 84%, 0.42);
-    transition: 0.5s;
 
     div {
         padding: $padd;
-        transition: 0.5s;
     }
-    div:nth-child(3) {
-        border-radius: 0px 0px 10px 10px;
+    div:first-child {
+        border-radius: 8px 8px 0px 0px;
+    }
+    div:last-child {
+        border-radius: 0px 0px 8px 8px;
     }
     div:hover {
-        background: black;
+        background: $b;
         color: white;
     }
 }

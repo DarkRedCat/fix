@@ -8,6 +8,9 @@ const Card = ({
     name,
     CurrentCurrency,
     ChangeCurrency,
+    black_relocation_change,
+    propsYakor,
+
     textData
 }) => {
     const langNum = useContext(LangContext);
@@ -31,13 +34,21 @@ const Card = ({
             <div
                 className="card_container"
                 onClick={() => {
-                    history.push(`/product/${_id}`);
+                    black_relocation_change();
+                    propsYakor();
+                    setTimeout(() => {
+                        history.push(`/product/${_id}`);
+                    }, 450);
                 }}
             >
                 <div className="card_container__head">
                     <div className="card_container__head_size">
                         {ChangeCurrency(Cost, CurrentCurrency)}
                     </div>
+                    <img
+                        className="card_img"
+                        src={require("../../../img/pays.webp")}
+                    />
                     <div className="card_container__head_box">
                         {lang(textData.read_more, "dontProdDta")}...
                     </div>

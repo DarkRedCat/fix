@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { LangContext } from "../../App";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -9,10 +9,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import history from "../../utils/history";
 SwiperCore.use([Pagination, Navigation]);
 
+import { gsap } from "gsap";
+
+const timeline = gsap.timeline({});
+
 const Product = ({
     clickSendButton,
     CurrentCurrency,
     ChangeCurrency,
+    black_relocation,
     textData
 }) => {
     const langNum = useContext(LangContext);
@@ -50,6 +55,7 @@ const Product = ({
         two: null,
         three: null
     });
+
     const defaultData = {
         AllSize: [],
         size: "S",
@@ -104,7 +110,11 @@ const Product = ({
                     <div> {lang(text.text)}</div>
                     <div className="img_m">
                         {" "}
-                        <img src={text.img} alt="" />
+                        <img
+                            //  src={text.img}
+                            src={require("../../../img/pays.webp")}
+                            alt=""
+                        />
                     </div>
                     <table>
                         <thead>
@@ -135,23 +145,21 @@ const Product = ({
             return "";
         }
     };
-
     const renderCard = (data) => {
         if (data !== null) {
             return (
-                <div className="prod_container">
+                <div className="prod_container  prod_container_mod">
                     <h1 className="prod_container_title">{lang(data.name)}</h1>
                     <div className="prod_container_body">
-                        <div className="prod_container_l">
+                        <div className="prod_container_l_mod">
                             <div
-                                style={{ height: "100px" }}
                                 onClick={() => {
                                     history.push(`/product/${data._id}`);
                                 }}
                             >
                                 <img
-                                    style={{ height: "100%" }}
-                                    src={data.img[0]}
+                                    // src={data.img[0]}
+                                    src={require("../../../img/pays.webp")}
                                     alt=""
                                 />
                             </div>
@@ -167,7 +175,7 @@ const Product = ({
                             <div className="container_r_composition">
                                 {lang(data.composition)}
                             </div>
-                            <div className="container_r_buntons">
+                            <div className="container_r_buntons container_r_buntons_mod">
                                 <div
                                     className="buntons_wrap"
                                     onClick={() => {
@@ -194,7 +202,10 @@ const Product = ({
                                         });
                                     }}
                                 >
-                                    {lang(textData.SizeGrid, "dontProdDta")}
+                                    <div className="modal_bun">
+                                        {" "}
+                                        {lang(textData.SizeGrid, "dontProdDta")}
+                                    </div>
                                 </div>
                                 <div
                                     className="buntons_wrap"
@@ -222,58 +233,90 @@ const Product = ({
                                         });
                                     }}
                                 >
-                                    {lang(
-                                        textData.Taking_care_of_the_item,
-                                        "dontProdDta"
-                                    )}
+                                    <div className="modal_bun">
+                                        {" "}
+                                        {lang(
+                                            textData.Taking_care_of_the_item,
+                                            "dontProdDta"
+                                        )}
+                                    </div>
                                 </div>
                             </div>
+
                             <div className="container_r_size">
-                                {data.size.map((r) => (
+                                {data.size.map((r) => {
+                                    if (prodData[data._id].size == r) {
+                                        return (
+                                            <div
+                                                key={r}
+                                                className="container_r_size_active"
+                                                onClick={() => {
+                                                    ChangeProdData(
+                                                        r,
+                                                        data._id,
+                                                        ["size"]
+                                                    );
+                                                }}
+                                            >
+                                                <span> {r} </span>
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div
+                                                key={r}
+                                                onClick={() => {
+                                                    ChangeProdData(
+                                                        r,
+                                                        data._id,
+                                                        ["size"]
+                                                    );
+                                                }}
+                                            >
+                                                <span> {r} </span>
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                            <div className="container_r_footer">
+                                <div className="container_r_quantity">
                                     <div
-                                        key={r}
                                         onClick={() => {
-                                            ChangeProdData(r, data._id, [
-                                                "size"
-                                            ]);
+                                            ChangeProdData(
+                                                prodData[data._id].quantity,
+                                                data._id,
+                                                ["quantity", "-"]
+                                            );
                                         }}
                                     >
-                                        {r}
+                                        -
                                     </div>
-                                ))}
-                            </div>
-                            <div className="container_r_quantity">
+                                    <div>{prodData[data._id].quantity}</div>
+                                    <div
+                                        onClick={() => {
+                                            ChangeProdData(
+                                                prodData[data._id].quantity,
+                                                data._id,
+                                                ["quantity", "+"]
+                                            );
+                                        }}
+                                    >
+                                        +
+                                    </div>
+                                </div>
                                 <div
+                                    className="container_r_button close"
                                     onClick={() => {
-                                        ChangeProdData(
-                                            prodData[data._id].quantity,
-                                            data._id,
-                                            ["quantity", "-"]
-                                        );
+                                        sendForm(data);
                                     }}
                                 >
-                                    -
+                                    {lang(textData.button, "dontProdDta")}
+                                    <img
+                                        className="up1 container_r_button_img"
+                                        src={require("../../../img/ar2.png")}
+                                    />
                                 </div>
-                                <div>{prodData[data._id].quantity}</div>
-                                <div
-                                    onClick={() => {
-                                        ChangeProdData(
-                                            prodData[data._id].quantity,
-                                            data._id,
-                                            ["quantity", "+"]
-                                        );
-                                    }}
-                                >
-                                    +
-                                </div>
-                            </div>
-                            <div
-                                className="container_r_button"
-                                onClick={() => {
-                                    sendForm(data);
-                                }}
-                            >
-                                {lang(textData.button, "dontProdDta")}
                             </div>
                         </div>
                     </div>
@@ -312,9 +355,86 @@ const Product = ({
             }
         }
     };
+    const invers = (text, red) => {
+        const newText = text.split(" ");
+
+        if (red) {
+            return `${newText[1]}`;
+        } else {
+            return `${newText[0]}`;
+        }
+    };
+
+    const tl = useRef(timeline);
+    const app = useRef(null);
+
+    const black_relocation_close_function_first_page_launch = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+
+                .to(".black_relocation", {
+                    duration: 0,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 3,
+
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+
+    const black_relocation_close_function = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+                .to(".black_relocation", {
+                    duration: 0,
+                    opacity: 0,
+                    display: "none"
+                })
+                .to(".black_relocation", {
+                    duration: 0.5,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 1.5,
+
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+    const [red, setRed] = useState(true);
+    useEffect(() => {
+        setRed((prevState) => !prevState);
+    }, [location.pathname.split("/")[1]]);
+
+    useEffect(() => {
+        if (red) {
+            black_relocation_close_function_first_page_launch();
+        } else {
+            black_relocation_close_function();
+        }
+    }, [black_relocation]);
 
     return (
         <div>
+            <div ref={app}>
+                <div className="black_relocation"></div>
+            </div>
             {data !== "null" && allData !== "null" ? (
                 <div className="prod_container">
                     <Modal
@@ -344,7 +464,11 @@ const Product = ({
                             >
                                 {data[0].img.map((i) => (
                                     <SwiperSlide key={Math.random()}>
-                                        <img src={i} alt="1" />
+                                        <img
+                                            //  src={i}
+                                            src={require("../../../img/pays.webp")}
+                                            alt="1"
+                                        />
                                     </SwiperSlide>
                                 ))}
                             </Swiper>
@@ -367,7 +491,9 @@ const Product = ({
                                             lang(data[0].Caring_for_a_thing)
                                         )}
                                     />
-                                    {lang(textData.SizeGrid, "dontProdDta")}
+                                    <div className="modal_bun">
+                                        {lang(textData.SizeGrid, "dontProdDta")}
+                                    </div>
                                 </div>
                                 <div className="buntons_wrap">
                                     <Modal
@@ -376,58 +502,91 @@ const Product = ({
                                             data[0].dimension_grid
                                         )}
                                     />
-                                    {lang(
-                                        textData.Taking_care_of_the_item,
-                                        "dontProdDta"
-                                    )}
+
+                                    <div className="modal_bun">
+                                        {lang(
+                                            textData.Taking_care_of_the_item,
+                                            "dontProdDta"
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <div className="container_r_size">
-                                {data[0].size.map((r) => (
+                                {data[0].size.map((r) => {
+                                    if (prodData[data[0]._id].size == r) {
+                                        return (
+                                            <div
+                                                key={r}
+                                                className="container_r_size_active"
+                                                onClick={() => {
+                                                    ChangeProdData(
+                                                        r,
+                                                        data[0]._id,
+                                                        ["size"]
+                                                    );
+                                                }}
+                                            >
+                                                <span> {r} </span>
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div
+                                                key={r}
+                                                onClick={() => {
+                                                    ChangeProdData(
+                                                        r,
+                                                        data[0]._id,
+                                                        ["size"]
+                                                    );
+                                                }}
+                                            >
+                                                <span> {r} </span>
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                            <div className="container_r_footer">
+                                <div className="container_r_quantity">
                                     <div
-                                        key={r}
                                         onClick={() => {
-                                            ChangeProdData(r, data[0]._id, [
-                                                "size"
-                                            ]);
+                                            ChangeProdData(
+                                                prodData[data[0]._id].quantity,
+                                                data[0]._id,
+                                                ["quantity", "-"]
+                                            );
                                         }}
                                     >
-                                        {r}
+                                        -
                                     </div>
-                                ))}
-                            </div>
-                            <div className="container_r_quantity">
+                                    <div>
+                                        {prodData[data[0]._id].quantity || 1}
+                                    </div>
+                                    <div
+                                        onClick={() => {
+                                            ChangeProdData(
+                                                prodData[data[0]._id].quantity,
+                                                data[0]._id,
+                                                ["quantity", "+"]
+                                            );
+                                        }}
+                                    >
+                                        +
+                                    </div>
+                                </div>
                                 <div
+                                    className="container_r_button"
                                     onClick={() => {
-                                        ChangeProdData(
-                                            prodData[data[0]._id].quantity,
-                                            data[0]._id,
-                                            ["quantity", "-"]
-                                        );
+                                        sendForm(data[0]);
                                     }}
                                 >
-                                    -
+                                    {lang(textData.button, "dontProdDta")}
+                                    <img
+                                        className="up1 container_r_button_img"
+                                        src={require("../../../img/ar2.png")}
+                                    />
                                 </div>
-                                <div>{prodData[data[0]._id].quantity || 1}</div>
-                                <div
-                                    onClick={() => {
-                                        ChangeProdData(
-                                            prodData[data[0]._id].quantity,
-                                            data[0]._id,
-                                            ["quantity", "+"]
-                                        );
-                                    }}
-                                >
-                                    +
-                                </div>
-                            </div>
-                            <div
-                                className="container_r_button"
-                                onClick={() => {
-                                    sendForm(data[0]);
-                                }}
-                            >
-                                {lang(textData.button, "dontProdDta")}
                             </div>
                         </div>
                     </div>
@@ -441,7 +600,15 @@ const Product = ({
                                 navigation={true}
                                 loop={true}
                                 loopFillGroupWithBlank={true}
-                                slidesPerView={4}
+                                slidesPerView={
+                                    allData.length > 2 && allData.length < 4
+                                        ? allData.length
+                                        : allData.length < 2
+                                        ? 2
+                                        : allData.length > 4
+                                        ? 4
+                                        : allData.length
+                                }
                                 className="mySwiper swiper_container"
                             >
                                 {allData.map((m) => (
@@ -483,16 +650,35 @@ const Product = ({
                                             }}
                                         >
                                             <div className="footer_swiper_img">
-                                                <img src={m.img[0]} alt="" />
+                                                <img
+                                                    // src={m.img[0]}
+                                                    src={require("../../../img/pays.webp")}
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div className="footer_swiper_cost_container">
+                                                <div className="footer_swiper_cost">
+                                                    <div>
+                                                        {`${invers(
+                                                            ChangeCurrency(
+                                                                m.Cost,
+                                                                CurrentCurrency
+                                                            ),
+                                                            "red"
+                                                        )}`}
+                                                    </div>
+                                                    <div>
+                                                        {`${invers(
+                                                            ChangeCurrency(
+                                                                m.Cost,
+                                                                CurrentCurrency
+                                                            )
+                                                        )}`}
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div className="footer_swiper_name">
                                                 {lang(m.name)}
-                                            </div>
-                                            <div className="footer_swiper_cost">
-                                                {ChangeCurrency(
-                                                    m.Cost,
-                                                    CurrentCurrency
-                                                )}
                                             </div>
                                         </div>
                                     </SwiperSlide>

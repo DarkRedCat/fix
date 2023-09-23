@@ -1,7 +1,13 @@
 import React, { useContext } from "react";
 import { LangContext } from "../../App";
 import Cat from "./catigories";
-const Footer = ({ category, textData }) => {
+const Footer = ({
+    category,
+    textData,
+    black_relocation_change,
+    black_relocation,
+    propsYakor
+}) => {
     const langNum = useContext(LangContext);
     const lang = (data, dontProdDta) => {
         if (dontProdDta == "dontProdDta") {
@@ -23,6 +29,9 @@ const Footer = ({ category, textData }) => {
                     category={category}
                     head={false}
                     textData={textData}
+                    black_relocation_change={black_relocation_change}
+                    propsYakor={propsYakor}
+                    black_relocation={black_relocation}
                     lang={lang}
                 />
             </div>

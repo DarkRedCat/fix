@@ -2,7 +2,6 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import { UserContext } from "../../App";
 import Cat from "./catigories";
 import pick from "lodash/pick";
-
 import Login from "../form/login";
 import Modal from "./modal";
 import { gsap } from "gsap";
@@ -10,12 +9,11 @@ import Register from "../form/register";
 import { useSelector } from "react-redux";
 import { getIsLoggedIn } from "../../store/users";
 import { getProductsbyId } from "../../store/product";
-
 import { LangContext } from "../../App";
-
 import history from "../../utils/history";
 
 const timeline = gsap.timeline({});
+
 const timeline2 = gsap.timeline({});
 
 const Header = ({
@@ -26,6 +24,9 @@ const Header = ({
     currency,
     ChangeCurrency,
     ChangeCurrentLang,
+    black_relocation_change,
+    black_relocation,
+    propsYakor,
     textData
 }) => {
     const isLoggedIn = useSelector(getIsLoggedIn());
@@ -45,8 +46,12 @@ const Header = ({
     };
 
     /*------------------ */
+
+    /*------------------ */
     const end1 = useRef(null);
     const end2 = useRef(null);
+    const box_right_ul = useRef(null);
+
     const ed = useRef(null);
     const pocet = useRef(null);
     const red = useContext(UserContext);
@@ -57,7 +62,6 @@ const Header = ({
         if (act !== undefined) {
             const ctx = gsap.context(() => {
                 tl.current.to(".pocet-one", {
-                    duration: 1,
                     ease: "power3.out",
 
                     right: 0
@@ -67,7 +71,6 @@ const Header = ({
         } else {
             const ctx = gsap.context(() => {
                 tl.current.to(".pocet-one", {
-                    duration: 1,
                     ease: "power3.out",
 
                     right: "-300px"
@@ -80,7 +83,6 @@ const Header = ({
         if (act !== undefined) {
             const ctx = gsap.context(() => {
                 t2.current.to(".pocet-two", {
-                    duration: 1,
                     opacity: 1
                 });
             }, pocet.current);
@@ -88,7 +90,6 @@ const Header = ({
         } else {
             const ctx = gsap.context(() => {
                 t2.current.to(".pocet-two", {
-                    duration: 1,
                     opacity: 0
                 });
             }, pocet.current);
@@ -103,15 +104,58 @@ const Header = ({
             pocet.current.classList.remove("pocet-active");
         }, 1000);
     };
+    const drop_down_menu_function = (el, app, act, time) => {
+        const elClass = `.${el.current.classList[0]}`;
+
+        if (act !== undefined) {
+            const ctx = gsap.context(() => {
+                time.current
+                    .to(elClass, {
+                        duration: 0,
+                        display: "block"
+                    })
+                    .to(elClass, {
+                        duration: 0.5,
+                        opacity: 1
+                    });
+            }, app.current);
+            return () => ctx.revert();
+        } else {
+            const ctx = gsap.context(() => {
+                time.current
+                    .to(elClass, {
+                        duration: 0.5,
+
+                        opacity: 0
+                    })
+                    .to(elClass, {
+                        duration: 0,
+                        display: "none",
+                        onComplete: function () {
+                            if (el.current) {
+                                el.current.classList.remove("active");
+                            }
+                        }
+                    });
+            }, app.current);
+            return () => ctx.revert();
+        }
+    };
+
     if (red !== null && end1.current !== null && end2.current !== null) {
         if (
             end2.current.parentElement.offsetParent !== red.parentElement ||
             end2.current.parentElement.offsetParent !== red.parentElement
         ) {
-            end1.current.classList.remove("box-right_li_end_active");
-            end2.current.classList.remove("box-right_li_end_active");
+            if (end2.current !== red.parentElement) {
+                drop_down_menu_function(end2, box_right_ul, undefined, t2);
+            }
+            if (end1.current !== red.parentElement) {
+                drop_down_menu_function(end1, box_right_ul, undefined, tl);
+            }
         }
     }
+
     const no_scroll = () => {
         document.body.classList.toggle("no_scroll");
         pocet.current.classList.toggle("pocet-active");
@@ -123,7 +167,7 @@ const Header = ({
             return (
                 <>
                     <Login data={textData} fun={lang} />
-
+                    <div style={{ color: "#dedede", margin: "10px" }}>-or-</div>
                     <div
                         className="buntons_wrap"
                         onClick={() => {
@@ -144,12 +188,45 @@ const Header = ({
                             });
                         }}
                     >
-                        {lang(textData.Or_registration, "dontProdDta")}
+                        <div>
+                            {" "}
+                            {/* {lang(textData.Or_registration, "dontProdDta")} */}
+                            Quick sign up
+                        </div>
                     </div>
                 </>
             );
         } else {
-            return <Register data={textData} fun={lang} />;
+            return (
+                <>
+                    <Register data={textData} fun={lang} />
+                    <div style={{ color: "#dedede", marginBottom: "10px" }}>
+                        -or-
+                    </div>
+                    <div
+                        className="buntons_wrap"
+                        onClick={() => {
+                            setAct((prevState) => {
+                                if (prevState.two == null) {
+                                    return {
+                                        ...prevState,
+                                        two: true
+                                    };
+                                }
+                                if (typeof prevState.two == "boolean") {
+                                    return {
+                                        ...prevState,
+
+                                        two: !prevState.two
+                                    };
+                                }
+                            });
+                        }}
+                    >
+                        Quick sign in
+                    </div>
+                </>
+            );
         }
     };
 
@@ -187,6 +264,10 @@ const Header = ({
             setCart2({ ...JSON.parse(localStorage.getItem("cart")) });
         }
     }, [changeSendButton]);
+    useEffect(() => {
+        document.body.classList.remove("no_scroll");
+        pocet.current.classList.remove("pocet-active");
+    }, []);
     const ChangeProdData = (value, id, type) => {
         if (type[0] == "size") {
             setCart2((prevState) => ({
@@ -228,34 +309,7 @@ const Header = ({
     const renderPoketCard = (data, id) => {
         return (
             <div className="pocet_container">
-                <div className="pocet_container_img">
-                    <div
-                        style={{ height: "100px" }}
-                        onClick={() => {
-                            setSmallCardData((prevState) => ({
-                                ...prevState,
-                                one: id
-                            }));
-                            setAct((prevState) => {
-                                if (prevState.free == null) {
-                                    return {
-                                        ...prevState,
-                                        free: true
-                                    };
-                                }
-                                if (typeof prevState.free == "boolean") {
-                                    return {
-                                        ...prevState,
-                                        free: !prevState.free
-                                    };
-                                }
-                            });
-                        }}
-                    >
-                        <img style={{ height: "100%" }} src={data.img} alt="" />
-                    </div>
-                </div>
-                <div className="pocet_container_r">
+                <div>
                     <div
                         className="pocet_container_r_del"
                         onClick={() => {
@@ -269,58 +323,120 @@ const Header = ({
                             );
                         }}
                     >
-                        del
+                        +
                     </div>
-                    <div className="pocet_container_r_name">
-                        {" "}
-                        {lang(data.name)}
-                    </div>
-                    <div className="pocet_container_r_size">
-                        {data.AllSize.map((r) => (
-                            <div
-                                key={r}
-                                onClick={() => {
-                                    ChangeProdData(r, id, ["size"]);
-                                }}
-                            >
-                                {r}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="pocet_container_r_quantity">
+                    <div className="pocet_container_img">
                         <div
                             onClick={() => {
-                                ChangeProdData(cart2[id].quantity, id, [
-                                    "quantity",
-                                    "-"
-                                ]);
+                                setSmallCardData((prevState) => ({
+                                    ...prevState,
+                                    one: id
+                                }));
+                                setAct((prevState) => {
+                                    if (prevState.free == null) {
+                                        return {
+                                            ...prevState,
+                                            free: true
+                                        };
+                                    }
+                                    if (typeof prevState.free == "boolean") {
+                                        return {
+                                            ...prevState,
+                                            free: !prevState.free
+                                        };
+                                    }
+                                });
                             }}
                         >
-                            -
-                        </div>
-                        <div>{cart2[id].quantity}</div>
-                        <div
-                            onClick={() => {
-                                ChangeProdData(cart2[id].quantity, id, [
-                                    "quantity",
-                                    "+"
-                                ]);
-                            }}
-                        >
-                            +
+                            <img
+                                style={{ height: "100px" }}
+                                // src={data.img}
+                                src={require("../../../img/pays.webp")}
+                                alt=""
+                            />
                         </div>
                     </div>
+                    <div className="pocet_container_r">
+                        <div className="pocet_container_r_name">
+                            {" "}
+                            {lang(data.name)}
+                        </div>
+                        <div className="pocet_container_r_size">
+                            <div>Size:</div>
 
-                    <div className="pocet_container_r_cost">
-                        {ChangeCurrency(
-                            data.cost * cart2[id].quantity,
-                            CurrentCurrency
-                        )}
+                            <div>
+                                {data.AllSize.map((r) => {
+                                    if (cart2[id].size == r) {
+                                        return (
+                                            <div
+                                                key={r}
+                                                onClick={() => {
+                                                    ChangeProdData(r, id, [
+                                                        "size"
+                                                    ]);
+                                                }}
+                                            >
+                                                <div className="r">{r}</div>
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div
+                                                key={r}
+                                                onClick={() => {
+                                                    ChangeProdData(r, id, [
+                                                        "size"
+                                                    ]);
+                                                }}
+                                            >
+                                                {r}
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                        </div>
+                        <div className="pocet_container_r_quantity">
+                            <div>Quantity:</div>
+                            <div>
+                                <div>{cart2[id].quantity}</div>
+                                <div style={{ margin: "0 10px " }}>|</div>
+                                <div
+                                    onClick={() => {
+                                        ChangeProdData(cart2[id].quantity, id, [
+                                            "quantity",
+                                            "+"
+                                        ]);
+                                    }}
+                                >
+                                    +
+                                </div>{" "}
+                                <div
+                                    onClick={() => {
+                                        ChangeProdData(cart2[id].quantity, id, [
+                                            "quantity",
+                                            "-"
+                                        ]);
+                                    }}
+                                >
+                                    -
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pocet_container_r_cost">
+                            {ChangeCurrency(
+                                (data.cost * cart2[id].quantity).toFixed(2),
+                                CurrentCurrency
+                            )}
+                        </div>
                     </div>
                 </div>
+                <div></div>
             </div>
         );
     };
+
     const renderTable = (text) => {
         if (text !== null) {
             const rendertable = (table) => {
@@ -336,10 +452,14 @@ const Header = ({
 
             return (
                 <div className="modal_skroll">
-                    <div>{lang(text.text)}</div>
+                    <div> {lang(text.text)}</div>
                     <div className="img_m">
                         {" "}
-                        <img src={text.img} alt="" />
+                        <img
+                            //  src={text.img}
+                            src={require("../../../img/pays.webp")}
+                            alt=""
+                        />
                     </div>
                     <table>
                         <thead>
@@ -370,42 +490,41 @@ const Header = ({
             return "";
         }
     };
+
     const renderCard = (id) => {
         const data0 = useSelector(getProductsbyId(id)) || "null";
         const data = data0[0];
 
         if (id !== "null" && id !== null) {
             return (
-                <div className="prod_container">
-                    <h1 className="prod_container_title"> {lang(data.name)}</h1>
+                <div className="prod_container  prod_container_mod">
+                    <h1 className="prod_container_title">{lang(data.name)}</h1>
                     <div className="prod_container_body">
-                        <div className="prod_container_l">
+                        <div className="prod_container_l_mod">
                             <div
-                                className="close"
-                                style={{ height: "100px" }}
-                                onDoubleClick={() => {
+                                onClick={() => {
                                     history.push(`/product/${data._id}`);
                                 }}
                             >
                                 <img
-                                    style={{ height: "100%" }}
-                                    src={data.img[0]}
+                                    // src={data.img[0]}
+                                    src={require("../../../img/pays.webp")}
                                     alt=""
                                 />
                             </div>
                         </div>
                         <div className="prod_container_r">
                             <div className="container_r_cost">
-                                {" "}
                                 {ChangeCurrency(data.Cost, CurrentCurrency)}
                             </div>
                             <div className="container_r_text">
-                                {lang(data.text)}{" "}
+                                {" "}
+                                {lang(data.text)}
                             </div>
                             <div className="container_r_composition">
                                 {lang(data.composition)}
                             </div>
-                            <div className="container_r_buntons">
+                            <div className="container_r_buntons container_r_buntons_mod">
                                 <div
                                     className="buntons_wrap"
                                     onClick={() => {
@@ -432,8 +551,12 @@ const Header = ({
                                         });
                                     }}
                                 >
-                                    {lang(textData.SizeGrid, "dontProdDta")}
+                                    <div className="modal_bun">
+                                        {" "}
+                                        {lang(textData.SizeGrid, "dontProdDta")}
+                                    </div>
                                 </div>
+
                                 <div
                                     className="buntons_wrap"
                                     onClick={() => {
@@ -460,12 +583,91 @@ const Header = ({
                                         });
                                     }}
                                 >
-                                    {lang(
-                                        textData.Taking_care_of_the_item,
-                                        "dontProdDta"
-                                    )}
+                                    <div className="modal_bun">
+                                        {" "}
+                                        {lang(
+                                            textData.Taking_care_of_the_item,
+                                            "dontProdDta"
+                                        )}
+                                    </div>
                                 </div>
                             </div>
+
+                            {/* <div className="container_r_size">
+                                {data.size.map((r) => {
+                                    if (prodData[data._id].size == r) {
+                                        return (
+                                            <div
+                                                key={r}
+                                                className="container_r_size_active"
+                                                onClick={() => {
+                                                    ChangeProdData(
+                                                        r,
+                                                        data._id,
+                                                        ["size"]
+                                                    );
+                                                }}
+                                            >
+                                                <span> {r} </span>
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div
+                                                key={r}
+                                                onClick={() => {
+                                                    ChangeProdData(
+                                                        r,
+                                                        data._id,
+                                                        ["size"]
+                                                    );
+                                                }}
+                                            >
+                                                <span> {r} </span>
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                            <div className="container_r_footer">
+                                <div className="container_r_quantity">
+                                    <div
+                                        onClick={() => {
+                                            ChangeProdData(
+                                                prodData[data._id].quantity,
+                                                data._id,
+                                                ["quantity", "-"]
+                                            );
+                                        }}
+                                    >
+                                        -
+                                    </div>
+                                    <div>{prodData[data._id].quantity}</div>
+                                    <div
+                                        onClick={() => {
+                                            ChangeProdData(
+                                                prodData[data._id].quantity,
+                                                data._id,
+                                                ["quantity", "+"]
+                                            );
+                                        }}
+                                    >
+                                        +
+                                    </div>
+                                </div>
+                                <div
+                                    className="container_r_button"
+                                    onClick={() => {
+                                        sendForm(data);
+                                    }}
+                                >
+                                    {lang(textData.button, "dontProdDta")}
+                                    <img
+                                        className="up1 container_r_button_img"
+                                        src={require("../../../img/ar2.png")}
+                                    />
+                                </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -474,7 +676,10 @@ const Header = ({
     };
 
     return (
-        <div className="main_page__header">
+        <div
+            className="main_page__header"
+            style={{ zIndex: 101, position: "relative" }}
+        >
             <Modal
                 fun={renderCard(smallCardData.one)}
                 act={act.free}
@@ -482,7 +687,6 @@ const Header = ({
             />
             <Modal fun={renderText(smallCardData.two)} act={act.five} />
             <Modal fun={renderTable(smallCardData.three)} act={act.four} />
-
             <div ref={ff}>
                 <Modal
                     fun={renderLogin("login")}
@@ -491,9 +695,12 @@ const Header = ({
                 />
             </div>
             <div ref={ff}>
-                <Modal fun={renderLogin()} act={act.one} />
+                <Modal
+                    fun={renderLogin()}
+                    act={act.one}
+                    className1={"modal_cont_log2"}
+                />
             </div>
-
             <div className="pocet" ref={pocet}>
                 <div className="pocet-one">
                     <div
@@ -541,7 +748,25 @@ const Header = ({
                             <div>{Finalcost()}</div>
                         </div>
                         <div className="block_button">
-                            <div onClick={() => console.log(cart2)}>
+                            <div
+                                onClick={() => {
+                                    setTimeout(() => {
+                                        if (
+                                            history.location.pathname.split(
+                                                "/"
+                                            )[1] !== "checkout"
+                                        ) {
+                                            closePoc();
+                                            black_relocation_change();
+                                            propsYakor();
+
+                                            setTimeout(() => {
+                                                history.push(`/checkout/`);
+                                            }, 450);
+                                        }
+                                    }, 1000);
+                                }}
+                            >
                                 {lang(textData.CheckOut, "dontProdDta")}
                             </div>
                         </div>
@@ -554,128 +779,190 @@ const Header = ({
                     }}
                 ></div>
             </div>
-
-            <div className="header_container">
-                <div className="header_container__section_1">
-                    <span></span>
-                    <div className="header_container__section_1_center-box"></div>
-                </div>
-                <div className="header_container__section_2">
-                    <Cat
-                        category={category}
-                        head={true}
-                        textData={textData}
-                        lang={lang}
-                    />
-                </div>
-                <div className="header_container__section_3">
-                    <div className="header_container__section_3-box-right">
-                        <div className="section_3-box-right">
-                            <div className="box-right_ul">
+            <div>
+                <div className="header_container">
+                    <div className="header_container__section_1">
+                        <span></span>
+                        <div
+                            onClick={() => {
+                                if (history.location.pathname !== "/") {
+                                    setTimeout(() => {
+                                        black_relocation_change();
+                                        propsYakor();
+                                        setTimeout(() => {
+                                            history.push(`/`);
+                                        }, 450);
+                                    }, 1000);
+                                }
+                            }}
+                            className="header_container__section_1_center-box"
+                        ></div>
+                    </div>
+                    <div className="header_container__section_2">
+                        <Cat
+                            category={category}
+                            head={true}
+                            textData={textData}
+                            black_relocation_change={black_relocation_change}
+                            propsYakor={propsYakor}
+                            lang={lang}
+                        />
+                    </div>
+                    <div className="header_container__section_3">
+                        <div className="header_container__section_3-box-right">
+                            <div className="section_3-box-right">
                                 <div
-                                    className="box-right_li"
-                                    onClick={() => {
-                                        end1.current.classList.toggle(
-                                            "box-right_li_end_active"
-                                        );
-                                        end2.current.classList.remove(
-                                            "box-right_li_end_active"
-                                        );
-                                    }}
+                                    className="box-right_ul"
+                                    ref={box_right_ul}
                                 >
-                                    {CurrentCurrency}
                                     <div
-                                        ref={end1}
-                                        className="box-right_li_end_1"
+                                        className="box-right_li"
+                                        onClick={() => {
+                                            end1.current.classList.add(
+                                                "active"
+                                            );
+
+                                            drop_down_menu_function(
+                                                end2,
+                                                box_right_ul,
+                                                undefined,
+                                                t2
+                                            );
+                                            drop_down_menu_function(
+                                                end1,
+                                                box_right_ul,
+                                                end1.current.classList[1],
+                                                tl
+                                            );
+                                        }}
                                     >
-                                        {currency !== undefined &&
-                                            currency !== null &&
-                                            Object.keys(currency).map((i) => (
+                                        {CurrentCurrency}
+                                        <div
+                                            ref={end1}
+                                            className="box-right_li_end_1"
+                                        >
+                                            {currency !== undefined &&
+                                                currency !== null &&
+                                                Object.keys(currency).map(
+                                                    (i) => (
+                                                        <div
+                                                            key={i}
+                                                            onClick={() => {
+                                                                ChangeCurrentCurrency(
+                                                                    i
+                                                                );
+                                                            }}
+                                                        >
+                                                            {i}
+                                                        </div>
+                                                    )
+                                                )}
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="box-right_li"
+                                        onClick={() => {
+                                            end2.current.classList.add(
+                                                "active"
+                                            );
+                                            drop_down_menu_function(
+                                                end1,
+                                                box_right_ul,
+                                                undefined,
+                                                tl
+                                            );
+                                            drop_down_menu_function(
+                                                end2,
+                                                box_right_ul,
+                                                end2.current.classList[1],
+                                                t2
+                                            );
+                                        }}
+                                    >
+                                        {["RUS", "UKR", "ENG"][langNum]}
+                                        <div
+                                            ref={end2}
+                                            className="box-right_li_end_2"
+                                        >
+                                            {["RUS", "UKR", "ENG"].map((i) => (
                                                 <div
                                                     key={i}
                                                     onClick={() => {
-                                                        ChangeCurrentCurrency(
-                                                            i
-                                                        );
+                                                        ChangeCurrentLang(i);
                                                     }}
                                                 >
                                                     {i}
                                                 </div>
                                             ))}
+                                        </div>
                                     </div>
-                                </div>
-                                <div
-                                    className="box-right_li"
-                                    onClick={() => {
-                                        end2.current.classList.toggle(
-                                            "box-right_li_end_active"
-                                        );
-                                        end1.current.classList.remove(
-                                            "box-right_li_end_active"
-                                        );
-                                    }}
-                                >
-                                    {["RUS", "UKR", "ENG"][langNum]}
-                                    <div
-                                        ref={end2}
-                                        className="box-right_li_end_2"
-                                    >
-                                        {["RUS", "UKR", "ENG"].map((i) => (
-                                            <div
-                                                key={i}
-                                                onClick={() => {
-                                                    ChangeCurrentLang(i);
-                                                }}
-                                            >
-                                                {i}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
 
-                                <div className="box-right_li " ref={ed}>
-                                    <div
-                                        className="buntons_wrap"
-                                        onClick={() => {
-                                            if (!isLoggedIn) {
-                                                hieDiv();
-                                                setAct((prevState) => {
-                                                    if (prevState.two == null) {
-                                                        return {
-                                                            ...prevState,
-                                                            two: true
-                                                        };
-                                                    }
+                                    <div className="box-right_li " ref={ed}>
+                                        <div
+                                            className="buntons_wrap"
+                                            onClick={() => {
+                                                if (!isLoggedIn) {
+                                                    hieDiv();
+                                                    setAct((prevState) => {
+                                                        if (
+                                                            prevState.two ==
+                                                            null
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                two: true
+                                                            };
+                                                        }
+                                                        if (
+                                                            typeof prevState.two ==
+                                                            "boolean"
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                two: !prevState.two
+                                                            };
+                                                        }
+                                                    });
+                                                } else {
                                                     if (
-                                                        typeof prevState.two ==
-                                                        "boolean"
+                                                        history.location
+                                                            .pathname !==
+                                                        "/user/"
                                                     ) {
-                                                        return {
-                                                            ...prevState,
-                                                            two: !prevState.two
-                                                        };
+                                                        setTimeout(() => {
+                                                            black_relocation_change();
+                                                            propsYakor();
+                                                            setTimeout(() => {
+                                                                history.push(
+                                                                    `/user/`
+                                                                );
+                                                            }, 450);
+                                                        }, 1000);
                                                     }
-                                                });
-                                            } else {
-                                                history.push(`/user/`);
-                                            }
+                                                }
+                                            }}
+                                        >
+                                            <img
+                                                src={require("../../../img/user.png")}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="box-right_li"
+                                        onClick={() => {
+                                            no_scroll();
                                         }}
                                     >
                                         <img
-                                            src={require("../../../img/user.png")}
+                                            src={require("../../../img/bas.png")}
                                         />
+                                        <div>
+                                            {" "}
+                                            {Finalcost() == 0.0
+                                                ? ""
+                                                : Finalcost()}
+                                        </div>
                                     </div>
-                                </div>
-                                <div
-                                    className="box-right_li"
-                                    onClick={() => {
-                                        no_scroll();
-                                    }}
-                                >
-                                    <img
-                                        src={require("../../../img/bas.png")}
-                                    />
-                                    {Finalcost() == 0.0 ? "" : Finalcost()}
                                 </div>
                             </div>
                         </div>

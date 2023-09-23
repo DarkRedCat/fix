@@ -1,18 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { LangContext } from "../App";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { gsap } from "gsap";
 import { getProductsList } from "../store/product";
 
 import Card from "../components/common/Card";
-
-const Body = ({ CurrentCurrency, ChangeCurrency, textData }) => {
+const timeline = gsap.timeline({});
+const Body = ({
+    CurrentCurrency,
+    ChangeCurrency,
+    black_relocation_change,
+    textData,
+    propsYakor,
+    black_relocation
+}) => {
     const location = useLocation();
     const locationName = location.pathname
         .replace("/cat/", "")
         .replace("/", "");
-
     let data = useSelector(getProductsList(locationName)) || [];
 
     const langNum = useContext(LangContext);
@@ -31,8 +37,77 @@ const Body = ({ CurrentCurrency, ChangeCurrency, textData }) => {
         }
     };
 
+    const tl = useRef(timeline);
+    const app = useRef(null);
+
+    const black_relocation_close_function_first_page_launch = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+
+                .to(".black_relocation", {
+                    duration: 0,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 1.5,
+
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+
+    const black_relocation_close_function = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+                .to(".black_relocation", {
+                    duration: 0,
+                    opacity: 0,
+                    display: "none"
+                })
+                .to(".black_relocation", {
+                    duration: 0.5,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 1.5,
+
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+    const [red, setRed] = useState(true);
+    useEffect(() => {
+        setRed((prevState) => !prevState);
+    }, [location.pathname.split("/")[1]]);
+
+    useEffect(() => {
+        if (red) {
+            black_relocation_close_function_first_page_launch();
+        } else {
+            black_relocation_close_function();
+        }
+    }, [black_relocation]);
+
     return (
         <div className="category_page">
+            <div ref={app}>
+                <div className="black_relocation"></div>
+            </div>
+
             <div className=" category_page__body">
                 <div className="category_page__title">
                     <h1>
@@ -52,7 +127,9 @@ const Body = ({ CurrentCurrency, ChangeCurrency, textData }) => {
                             CurrentCurrency={CurrentCurrency}
                             ChangeCurrency={ChangeCurrency}
                             fun={lang}
+                            black_relocation_change={black_relocation_change}
                             textData={textData}
+                            propsYakor={propsYakor}
                             {...e}
                         />
                     ))}

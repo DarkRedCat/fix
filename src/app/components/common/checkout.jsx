@@ -1,9 +1,19 @@
-import React, { useEffect, useState, Component, useContext } from "react";
+import React, {
+    useEffect,
+    useState,
+    Component,
+    useContext,
+    useRef
+} from "react";
 import { LangContext } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
 import history from "../../utils/history";
 import TextField from "../form/textField";
-// import confing from "../../../../../server/config/default.json";
+
+import { gsap } from "gsap";
+
+const timeline = gsap.timeline({});
+
 import {
     getCurrentUserData,
     updateUser,
@@ -15,8 +25,13 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import LogOut from "../form/logOut";
 
-const Checkout = ({ textData, CurrentCurrency, ChangeCurrency }) => {
-    const isLoggedIn = useSelector(getIsLoggedIn());
+const Checkout = ({
+    textData,
+    CurrentCurrency,
+    ChangeCurrency,
+    black_relocation,
+    propsYakor
+}) => {
     const currentUser = useSelector(getCurrentUserData());
     const cart = JSON.parse(localStorage.getItem("cart"));
     const [cart2, setCart2] = useState(
@@ -34,7 +49,9 @@ const Checkout = ({ textData, CurrentCurrency, ChangeCurrency }) => {
     };
     const [data, setData] = useState({
         ...currentUser,
-        dat: { ...defaultData }
+        dat: {
+            ...defaultData
+        }
     });
     const [country, setCountry] = useState("");
     const [number, setNumber] = useState();
@@ -46,14 +63,16 @@ const Checkout = ({ textData, CurrentCurrency, ChangeCurrency }) => {
     };
     useEffect(() => {
         setData({
+            dat: {
+                ...defaultData
+            },
             ...currentUser
         });
-        setNumber(currentUser.dat.tel);
-        setCountry(currentUser.dat.country);
+        if (currentUser) {
+            setNumber(currentUser.dat.tel);
+            setCountry(currentUser.dat.country);
+        }
     }, []);
-    const handleSubmit = () => {
-        console.log(1);
-    };
     const langNum = useContext(LangContext);
     const lang = (data, dontProdDta) => {
         if (dontProdDta == "dontProdDta") {
@@ -88,122 +107,263 @@ const Checkout = ({ textData, CurrentCurrency, ChangeCurrency }) => {
         }
     };
 
-    if (isLoggedIn) {
-        return (
-            <div>
-                {Object.keys(cart2).map((i) => (
-                    <div key={i}>
-                        <div>{lang(cart2[i].name)}</div>
+    const tl = useRef(timeline);
+    const app = useRef(null);
+
+    const black_relocation_close_function_first_page_launch = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+
+                .to(".black_relocation", {
+                    duration: 0,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 3,
+
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+
+    const black_relocation_close_function = () => {
+        const ctx = gsap.context(() => {
+            tl.current
+                .to(".black_relocation", {
+                    duration: 0,
+                    opacity: 0,
+                    display: "none"
+                })
+                .to(".black_relocation", {
+                    duration: 0.5,
+                    display: "block",
+                    opacity: 1
+                })
+                .to(".black_relocation", {
+                    duration: 1.5,
+
+                    opacity: 0
+                })
+                .to(".black_relocation", {
+                    duration: 0,
+
+                    display: "none"
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+    const [red, setRed] = useState(true);
+    useEffect(() => {
+        setRed((prevState) => !prevState);
+    }, [location.pathname.split("/")[1]]);
+
+    useEffect(() => {
+        if (red) {
+            black_relocation_close_function_first_page_launch();
+        } else {
+            black_relocation_close_function();
+        }
+    }, [black_relocation]);
+    const handleSubmit = () => {};
+    return (
+        <div>
+            <div ref={app}>
+                <div className="black_relocation"></div>
+            </div>
+            <div className="Checkout_container">
+                <div className="Checkout_container_title">Checkout</div>
+                <div className="Checkout_container_body">
+                    <div className="Checkout_container_body_l">
                         <div>
-                            {lang(textData.Size, "dontProdDta")} {cart2[i].size}
-                        </div>
-                        <div>
-                            {lang(textData.Quantity, "dontProdDta")}{" "}
-                            {cart2[i].quantity}
-                        </div>
-                        <div>
-                            {" "}
-                            {ChangeCurrency(
-                                cart2[i].cost * cart2[i].quantity,
-                                CurrentCurrency
-                            )}{" "}
+                            <form onSubmit={handleSubmit}>
+                                <div>
+                                    <TextField
+                                        label="Имя"
+                                        name="name"
+                                        value={data.dat.name}
+                                        onChange={handleChange}
+                                    />
+                                    <TextField
+                                        label="Фамилия"
+                                        name="surname"
+                                        value={data.dat.surname}
+                                        onChange={handleChange}
+                                    />
+
+                                    <div
+                                        style={{
+                                            width: "100%"
+                                        }}
+                                        className={"phoneDiv"}
+                                    >
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: "12px"
+                                                }}
+                                            >
+                                                number
+                                            </label>
+                                            <PhoneInput
+                                                // labels={ru}
+                                                label="телефон"
+                                                name="tel"
+                                                value={number}
+                                                onChange={setNumber}
+                                                international
+                                                defaultCountry="RU"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="time">
+                                        <label
+                                            style={{
+                                                fontSize: "12px"
+                                            }}
+                                        >
+                                            сountry
+                                        </label>
+                                        <CountryDropdown
+                                            label="Страна"
+                                            name="сountry"
+                                            value={country}
+                                            onChange={(val) => {
+                                                setCountry(val);
+                                            }}
+                                        />
+                                    </div>
+
+                                    <TextField
+                                        label="Город"
+                                        name="city"
+                                        value={data.dat.city}
+                                        onChange={handleChange}
+                                    />
+                                    <TextField
+                                        label="Край/Область/Регион"
+                                        name="regionCountyState"
+                                        value={data.dat.regionCountyState}
+                                        onChange={handleChange}
+                                    />
+                                    <TextField
+                                        label="Улица, Дом, Квартира"
+                                        name="streetHouseApartment"
+                                        value={data.dat.streetHouseApartment}
+                                        onChange={handleChange}
+                                    />
+                                    <TextField
+                                        label="Почтовый индекс"
+                                        name="postcode"
+                                        value={data.dat.postcode}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary w-100 mx-auto"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                >
+                                    купить
+                                </button>
+                            </form>
                         </div>
                     </div>
-                ))}
-                <div>
-                    {lang(textData.Cost_of_the_items, "dontProdDta")}
-                    {ChangeCurrency(finalCost("finalCost"), CurrentCurrency)}
-                </div>
-                <div>
-                    {" "}
-                    {lang(textData.Delivery_cost, "dontProdDta")}{" "}
-                    {ChangeCurrency(finalCost("delivery"), CurrentCurrency)}
-                </div>
-                <div>
-                    {" "}
-                    {lang(textData.Total_due, "dontProdDta")}{" "}
-                    {ChangeCurrency(finalCost("Total_due"), CurrentCurrency)}
-                </div>
-                <div>
-                    <form onSubmit={handleSubmit}>
+                    <div className="Checkout_container_body_r">
+                        <h1>Your order</h1>
                         <div>
-                            <TextField
-                                label="Имя"
-                                name="name"
-                                value={data.dat.name}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                label="Фамилия"
-                                name="surname"
-                                value={data.dat.surname}
-                                onChange={handleChange}
-                            />
-
-                            <div style={{ width: "180px" }}>
-                                <PhoneInput
-                                    // labels={ru}
-                                    label="телефон"
-                                    name="tel"
-                                    value={number}
-                                    onChange={setNumber}
-                                    international
-                                    defaultCountry="RU"
-                                />
+                            <div className="Checkout_r_pocet_con">
+                                <div>
+                                    {" "}
+                                    {Object.keys(cart2).map((i) => (
+                                        <div key={i}>
+                                            <div>
+                                                <div className="Checkout_r_pocet_con_name">
+                                                    {lang(cart2[i].name)}
+                                                </div>
+                                                <div>
+                                                    {lang(
+                                                        textData.Size,
+                                                        "dontProdDta"
+                                                    )}{" "}
+                                                    {cart2[i].size}
+                                                </div>
+                                                <div>
+                                                    {lang(
+                                                        textData.Quantity,
+                                                        "dontProdDta"
+                                                    )}{" "}
+                                                    {cart2[i].quantity}
+                                                </div>
+                                                <div className="Checkout_r_pocet_con_cost">
+                                                    {" "}
+                                                    {ChangeCurrency(
+                                                        cart2[i].cost *
+                                                            cart2[i].quantity,
+                                                        CurrentCurrency
+                                                    )}{" "}
+                                                </div>
+                                            </div>
+                                            <div
+                                                className="border_bottom"
+                                                style={{
+                                                    border: "1px solid #111113"
+                                                }}
+                                            ></div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div>
+                                    {lang(
+                                        textData.Cost_of_the_items,
+                                        "dontProdDta"
+                                    )}{" "}
+                                    {ChangeCurrency(
+                                        finalCost("finalCost"),
+                                        CurrentCurrency
+                                    )}
+                                </div>
+                                <div>
+                                    {" "}
+                                    {lang(
+                                        textData.Delivery_cost,
+                                        "dontProdDta"
+                                    )}{" "}
+                                    {ChangeCurrency(
+                                        finalCost("delivery"),
+                                        CurrentCurrency
+                                    )}
+                                </div>
+                            </div>
+                            <div className="Checkout_r_pocet_con_total">
+                                <div>
+                                    {" "}
+                                    {lang(
+                                        textData.Total_due,
+                                        "dontProdDta"
+                                    )}{" "}
+                                    {ChangeCurrency(
+                                        finalCost("Total_due"),
+                                        CurrentCurrency
+                                    )}
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <div className="time" style={{ width: "180px" }}>
-                                <CountryDropdown
-                                    label="Страна"
-                                    name="сountry"
-                                    value={country}
-                                    onChange={(val) => {
-                                        setCountry(val);
-                                    }}
-                                />
-                            </div>
-
-                            <TextField
-                                label="Город"
-                                name="city"
-                                value={data.dat.city}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                label="Край/Область/Регион"
-                                name="regionCountyState"
-                                value={data.dat.regionCountyState}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                label="Улица, Дом, Квартира"
-                                name="streetHouseApartment"
-                                value={data.dat.streetHouseApartment}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                label="Почтовый индекс"
-                                name="postcode"
-                                value={data.dat.postcode}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="btn btn-primary w-100 mx-auto"
-                        >
-                            купить
-                        </button>
-                    </form>
+                    </div>
                 </div>
-                ;
             </div>
-        );
-    } else {
-        history.push(`/`);
-        return "load";
-    }
+        </div>
+    );
 };
 export default Checkout;

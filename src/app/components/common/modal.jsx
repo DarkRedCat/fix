@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
 const timeline = gsap.timeline({});
@@ -12,6 +12,7 @@ const Modal = ({ fun, act, cl, className1 }) => {
     const modalM = useRef(null);
 
     const modalDocum1 = document.querySelectorAll(".modal_cont_log");
+    const modalDocum2 = document.querySelectorAll(".modal_cont_log2");
     const tl = useRef(timeline);
     const t2 = useRef(timeline2);
     const t3 = useRef(timeline3);
@@ -68,18 +69,11 @@ const Modal = ({ fun, act, cl, className1 }) => {
         animate2(app);
         setTimeout(() => {
             document.body.classList.remove("no_scroll");
-            app.current.classList.remove("modal_active");
+            if (app.current) {
+                app.current.classList.remove("modal_active");
+            }
         }, 1000);
     };
-
-    if (CloseModalImg.length !== 0) {
-        CloseModalImg[0].addEventListener("click", () => {
-            if (modalM.current !== null) {
-                closeModal(modalM);
-            }
-        });
-    }
-
     useEffect(() => {
         animate2(modal);
     }, []);
@@ -103,9 +97,19 @@ const Modal = ({ fun, act, cl, className1 }) => {
                     const red = { current: modalDocum1[0] };
                     closeModal(red);
                 }
+                if (modal.current.classList[2] !== "modal_cont_log2") {
+                    const red = { current: modalDocum2[0] };
+
+                    closeModal(red);
+                }
             }
         }
     }, [act]);
+    if (CloseModalImg[0]) {
+        CloseModalImg[0].onclick = function () {
+            closeModal(modalM);
+        };
+    }
 
     return (
         <>

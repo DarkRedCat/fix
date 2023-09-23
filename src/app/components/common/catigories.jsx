@@ -4,7 +4,18 @@ import history1 from "../../utils/history";
 
 import { useRef } from "react";
 
-const Cat = ({ category, head, textData, lang }) => {
+import { gsap } from "gsap";
+
+const timeline = gsap.timeline({});
+
+const Cat = ({
+    category,
+    head,
+    textData,
+    lang,
+    black_relocation_change,
+    propsYakor
+}) => {
     let cat = category[0].Category;
     let delArr = [...cat];
     delArr.splice(0, 10);
@@ -13,12 +24,55 @@ const Cat = ({ category, head, textData, lang }) => {
     const df = useRef(null);
     const up = useRef(null);
 
-    const red = useContext(UserContext);
+    const t3 = useRef(timeline);
 
+    const red = useContext(UserContext);
+    const drop_down_menu_function = (el, app, act) => {
+        const elClass = `.${el.current.classList[0]}`;
+        if (act !== undefined) {
+            const ctx = gsap.context(() => {
+                t3.current
+                    .to(elClass, {
+                        duration: 0.1,
+                        display: "block",
+                        function() {
+                            if (up.current) {
+                                up.current.classList.add("up_active");
+                            }
+                        }
+                    })
+                    .to(elClass, {
+                        opacity: 1
+                    });
+            }, app.current);
+            return () => ctx.revert();
+        } else {
+            const ctx = gsap.context(() => {
+                t3.current
+                    .to(elClass, {
+                        opacity: 0,
+                        function() {
+                            if (up.current) {
+                                up.current.classList.remove("up_active");
+                            }
+                        }
+                    })
+                    .to(elClass, {
+                        duration: 0,
+                        display: "none",
+                        onComplete: function () {
+                            if (el.current) {
+                                el.current.classList.remove("active");
+                            }
+                        }
+                    });
+            }, app.current);
+            return () => ctx.revert();
+        }
+    };
     if (red !== null && df.current !== null) {
         if (df.current.parentElement.firstChild !== red.parentElement) {
-            df.current.classList.remove("cat__section_2_li_end_active");
-            up.current.classList.remove("up_active");
+            drop_down_menu_function(df, app);
         }
     }
 
@@ -30,7 +84,20 @@ const Cat = ({ category, head, textData, lang }) => {
                 return (
                     <div key={i} className="cat__section_2_li">
                         <div
-                            onClick={() => history1.push(`/cat/${i}/`)}
+                            onClick={() => {
+                                if (
+                                    history1.location.pathname.split("/")[2] !==
+                                    i
+                                ) {
+                                    setTimeout(() => {
+                                        black_relocation_change();
+                                        propsYakor();
+                                        setTimeout(() => {
+                                            history1.push(`/cat/${i}/`);
+                                        }, 450);
+                                    }, 1000);
+                                }
+                            }}
                             className="li"
                         >
                             {textData.cat.map(
@@ -41,15 +108,17 @@ const Cat = ({ category, head, textData, lang }) => {
                 );
             } else if (catNum == 11) {
                 return (
-                    <div key={i} className="cat__section_2_li">
+                    <div key={i} className="cat__section_2_li" ref={app}>
                         <div
-                            ref={app}
                             className="li"
                             onClick={(e) => {
-                                df.current.classList.toggle(
-                                    "cat__section_2_li_end_active"
+                                df.current.classList.toggle("active");
+
+                                drop_down_menu_function(
+                                    df,
+                                    app,
+                                    df.current.classList[1]
                                 );
-                                up.current.classList.toggle("up_active");
                             }}
                         >
                             <div>
@@ -70,8 +139,20 @@ const Cat = ({ category, head, textData, lang }) => {
                             {delArr.map((ic) => (
                                 <div
                                     key={ic}
-                                    onClick={(e) => {
-                                        history1.push(`/cat/${ic}/`);
+                                    onClick={() => {
+                                        if (
+                                            history1.location.pathname.split(
+                                                "/"
+                                            )[2] !== i
+                                        ) {
+                                            setTimeout(() => {
+                                                black_relocation_change();
+                                                propsYakor();
+                                                setTimeout(() => {
+                                                    history1.push(`/cat/${i}/`);
+                                                }, 450);
+                                            }, 1000);
+                                        }
                                     }}
                                 >
                                     {textData.cat.map(
@@ -89,7 +170,17 @@ const Cat = ({ category, head, textData, lang }) => {
                 <div
                     key={i}
                     className="cat__section_2_li"
-                    onClick={() => history1.push(`/cat/${i}/`)}
+                    onClick={() => {
+                        if (history1.location.pathname.split("/")[2] !== i) {
+                            setTimeout(() => {
+                                black_relocation_change();
+                                propsYakor();
+                                setTimeout(() => {
+                                    history1.push(`/cat/${i}/`);
+                                }, 450);
+                            }, 1000);
+                        }
+                    }}
                 >
                     <div className="li">
                         {textData.cat.map(
@@ -106,7 +197,20 @@ const Cat = ({ category, head, textData, lang }) => {
                 {cat.map((i) => renderCat(i))}
                 <div
                     className="cat__section_2_li"
-                    onClick={() => history1.push(`/faq/`)}
+                    onClick={() => {
+                        setTimeout(() => {
+                            if (
+                                history1.location.pathname.split("/")[1] !==
+                                "faq"
+                            ) {
+                                black_relocation_change();
+                                propsYakor();
+                                setTimeout(() => {
+                                    history1.push(`/faq/`);
+                                }, 450);
+                            }
+                        }, 1000);
+                    }}
                 >
                     <div className="li">FAQ</div>
                 </div>

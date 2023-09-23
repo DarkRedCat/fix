@@ -83,13 +83,12 @@ const LoginForm = ({ textData, fun }) => {
                 {fun(textData.Remain_in_the_system, "dontProdDta")}
             </CheckBoxField>
             {loginError && <p className="text-danger">{loginError}</p>}
-
             <button
                 type="submit"
                 disabled={!isValid}
                 className="btn btn-primary w-100 mx-auto"
             >
-                Submit
+                Quick sign up
             </button>
         </form>
     );

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useRef } from "react";
 import { ToastContainer } from "react-toastify";
 import { Route, Switch, Redirect } from "react-router-dom";
 import AppLoader from "./components/ui/hoc/appLoader";
@@ -18,10 +18,15 @@ import "swiper/components/navigation/navigation.min.css";
 import "swiper/components/pagination/pagination.min.css";
 import val from "./utils/val";
 import textData from "./textData.json";
+import history1 from "./utils/history";
+
 export const UserContext = createContext();
 export const LangContext = createContext();
 
 function App() {
+    document.querySelector("#root").style.backgroundImage =
+        "url(https://fastly.picsum.photos/id/702/3840/2160.jpg?hmac=uUBHCX_0404rxwbAdJx0OTkuCb0IglkhTmn5hFJ3qcE)";
+
     const isLoading = useSelector(getCategoryLoadingStatus());
     const category = useSelector(getCategory());
     const [click, setClick] = useState(null);
@@ -102,17 +107,44 @@ function App() {
         const cNumm = Number(num);
 
         if (variableСurrency == "USD") {
-            newNumm = cNumm;
+            newNumm = cNumm + " " + "USD";
         } else if (variableСurrency == "EUR") {
-            newNumm = (cNumm * currency.USD) / currency.EUR;
+            newNumm =
+                ((cNumm * currency.USD) / currency.EUR).toFixed(2) +
+                " " +
+                "EUR";
         } else if (variableСurrency == "UAH") {
-            newNumm = (cNumm * currency.USD) / currency.UAH;
+            newNumm =
+                ((cNumm * currency.USD) / currency.UAH).toFixed(2) +
+                " " +
+                "UAH";
         } else if (variableСurrency == "RUB") {
-            newNumm = cNumm * currency.USD;
+            newNumm = (cNumm * currency.USD).toFixed(2) + " " + "RUB";
         }
 
-        return newNumm.toFixed(2);
+        return newNumm;
     };
+    //***************************************************************** */
+
+    const [black_relocation, setBlack_relocation] = useState(true);
+    const black_relocation_change = () => {
+        setBlack_relocation((prevState) => !prevState);
+    };
+    //***************** */
+    const yakor = useRef(null);
+    const yakorFun = (yakor) => {
+        const topOffset = 50;
+        const elementPosition = yakor.current.getBoundingClientRect().top;
+        const offsePosition = elementPosition - topOffset;
+        window.scrollBy({ top: offsePosition, behavior: "smooth" });
+    };
+
+    const propsYakor = () => {
+        yakorFun(yakor);
+    };
+    useEffect(() => {
+        propsYakor();
+    }, []);
 
     return (
         <div
@@ -120,6 +152,7 @@ function App() {
                 setClick(e.target);
             }}
         >
+            <section ref={yakor}></section>
             <AppLoader>
                 {!isLoading && currency !== null ? (
                     <>
@@ -136,6 +169,11 @@ function App() {
                                     currency={currency}
                                     ChangeCurrency={ChangeCurrency}
                                     textData={textData.header}
+                                    black_relocation={black_relocation}
+                                    black_relocation_change={
+                                        black_relocation_change
+                                    }
+                                    propsYakor={propsYakor}
                                 />
                                 <Switch>
                                     <Route
@@ -147,6 +185,13 @@ function App() {
                                                 }
                                                 textData={textData.other}
                                                 ChangeCurrency={ChangeCurrency}
+                                                black_relocation={
+                                                    black_relocation
+                                                }
+                                                black_relocation_change={
+                                                    black_relocation_change
+                                                }
+                                                propsYakor={propsYakor}
                                                 {...props}
                                             />
                                         )}
@@ -160,6 +205,13 @@ function App() {
                                                 }
                                                 ChangeCurrency={ChangeCurrency}
                                                 textData={textData.checkout}
+                                                black_relocation={
+                                                    black_relocation
+                                                }
+                                                black_relocation_change={
+                                                    black_relocation_change
+                                                }
+                                                propsYakor={propsYakor}
                                                 {...props}
                                             />
                                         )}
@@ -169,6 +221,9 @@ function App() {
                                         render={(props) => (
                                             <Faq
                                                 textData={textData.faq}
+                                                black_relocation={
+                                                    black_relocation
+                                                }
                                                 {...props}
                                             />
                                         )}
@@ -185,24 +240,56 @@ function App() {
                                                 }
                                                 textData={textData.prod}
                                                 ChangeCurrency={ChangeCurrency}
+                                                black_relocation={
+                                                    black_relocation
+                                                }
                                                 {...props}
                                             />
                                         )}
                                     />
-                                    <Route path="/user/" component={User} />
+                                    <Route
+                                        path="/user/"
+                                        render={(props) => (
+                                            <User
+                                                black_relocation_change={
+                                                    black_relocation_change
+                                                }
+                                                black_relocation={
+                                                    black_relocation
+                                                }
+                                                {...props}
+                                            />
+                                        )}
+                                    />
 
-                                    <Route path="/" exact component={Main} />
+                                    <Route
+                                        path="/"
+                                        exact
+                                        render={(props) => (
+                                            <Main
+                                                black_relocation={
+                                                    black_relocation
+                                                }
+                                                {...props}
+                                            />
+                                        )}
+                                    />
                                     <Redirect to="/" />
                                 </Switch>
                                 <Footer
                                     category={category}
                                     textData={textData.header}
+                                    black_relocation={black_relocation}
+                                    black_relocation_change={
+                                        black_relocation_change
+                                    }
+                                    propsYakor={propsYakor}
                                 />
                             </LangContext.Provider>
                         </UserContext.Provider>
                     </>
                 ) : (
-                    "load"
+                    ""
                 )}
             </AppLoader>
             <ToastContainer />
