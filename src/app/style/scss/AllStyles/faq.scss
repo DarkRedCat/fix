@@ -1,0 +1,43 @@
+.faq_page__body {
+    width: 60%;
+    padding: 50px;
+}
+.dropdown {
+    .dropdown_sub-conteiner {
+        display: flex;
+        padding: 0px 30px;
+        border-radius: 50px;
+        border: 1px solid #111113;
+        width: 43%;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
+
+    .dropdown_ar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+            transition: transform 0.5s;
+            transform: rotate(0deg);
+
+            height: 30%;
+        }
+    }
+    .dropdown_text {
+        overflow: hidden;
+        height: 0;
+    }
+    div {
+        h3 {
+            margin: 15px 0;
+        }
+    }
+}
+.dropdown__active {
+    .dropdown_ar {
+        img {
+            transform: rotate(180deg);
+        }
+    }
+}

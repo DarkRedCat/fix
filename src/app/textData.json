@@ -1,0 +1,167 @@
+{
+    "header": {
+        "cat": [
+            ["Футболки", "Футболки", "t-shirts"],
+            ["Толдинги", "Толстоти", "sweatshirts"],
+            ["толстовки", "Толстовки", "hoodies"],
+            ["Сумки", "сумки", "bags"],
+            ["Шорты штанов", "Штани-шорти", "pants-shorts"],
+            ["поло", "поло", "polo"],
+            ["Рубашки", "Сорочки", "shirts"],
+            ["Пижама", "піжама", "pajamas"],
+            ["головные уборы", "капелюхи", "hats"],
+            ["колпачки", "шапки", "caps"],
+            ["Трусы", "Переджарні", "underpants"],
+            ["Сувениры", "сувеніри", "souvenirs"],
+            ["мемы", "Мемати", "memes"]
+        ],
+        "SubCat": ["Ваш заказ", "Ваше замовлення", "Your order"],
+        "My_purchases": ["Мои покупки", "Мої покупки", "My purchases"],
+        "Continue_shopping": [
+            "Продолжить покупки",
+            "Продовжиты покупки",
+            "Continue shopping"
+        ],
+        "Promocode": ["Промокод", "Промокод", "Promocode"],
+        "Size": ["Размер", "Розмір", "Size"],
+        "Quantity": ["Количество", "Кількість", "Quantity"],
+        "Apply": ["Применить", "Застосувати", "Apply"],
+        "TotalDue": ["Итого", "В сумі", "Total due"],
+        "CheckOut": ["Оформить заказ", "Оформити замовлення", "Checkout"],
+        "SizeGrid": ["Размерная сетка", "розмірна сітка", "Size grid"],
+        "Taking_care_of_the_item": [
+            "Уход за Вешью",
+            "догляд за річчю",
+            "Taking care of the item"
+        ],
+        "Email": ["Электронная почта", "Електронна пошта", "Email"],
+        "mod_one": [
+            "Стандарные правила ухода",
+            "Стандартні правила догляду",
+            "Standard rules for care"
+        ],
+        "Password": ["Пароль", "Пароль", "Password"],
+        "erEmail": [
+            "Электронная почта обязательна для заполнения",
+            "Електронна пошта потрібна для заповнення",
+            "Email is required to fill out"
+        ],
+        "erPassword": [
+            "Пароль обязателкн для заполнения",
+            "Пароль необхідім для заповнення",
+            "Password is required to fill out"
+        ],
+        "Remain_in_the_system": [
+            "Остаться в Системе",
+            "Залишайтеся в системі",
+            "Remain in the system"
+        ],
+        "Or_registration": [
+            "Или регистрация",
+            "або реєстрація",
+            "Or registration"
+        ],
+        "Set_the_license_agreement": [
+            "Лицензионное соглашение",
+            "Встановіть ліцензійну угоду",
+            "Set the license agreement"
+        ],
+        "You_cannot_use": [
+            "Вы не можете использовать нашу услугу без подкоренности лицензионного соглашения.",
+            "Ви не можете використовувати послугу без підшканери ліцензійної угоди",
+            "You cannot use our service without the subcutaneity of the license agreement"
+        ],
+        "Email_is_introduced": [
+            "Пароль обязательна для заполнения",
+            "Електронна пошта вводиться неправильно",
+            "Email is introduced incorrectly"
+        ],
+        "least_one_capital_letter": [
+            "Пароль должен содержать хотя бы одну заглавную букву",
+            "Пароль повинен містити щонайменше один капітальний лист",
+            "The password must contain at least one capital letter"
+        ],
+        "least_one_number": [
+            "Пароль должен содержать хотя бы одно число",
+            "Пароль повинен містити щонайменше одне число",
+            "The password must contain at least one number"
+        ],
+        "minim_of_8_characters": [
+            "Пароль должен состаять миниму из 8 символов",
+            "Пароль повинен складати міняльні 8 символів",
+            "The password should compose a minim of 8 characters"
+        ]
+    },
+    "prod": {
+        " {lang(textData , 'dontProdDta')}": "",
+        "SizeGrid": ["Размерная сетка", "розмірна сітка", "Size grid"],
+        "Taking_care_of_the_item": [
+            "Уход за Вешью",
+            "догляд за річчю",
+            "Taking care of the item"
+        ],
+        "button": ["Добавить в корзину", "Додаты до кошику", "Add to cart"],
+        "recommend": [
+            "Рекомендуетм к покупке",
+            "Ми рекомендуємо до покупки",
+            " We recommend the purchase"
+        ]
+    },
+    "other": {
+        "cat": [
+            ["Футболки", "Футболки", "t-shirts"],
+            ["Толдинги", "Толстоти", "sweatshirts"],
+            ["толстовки", "Толстовки", "hoodies"],
+            ["Сумки", "сумки", "bags"],
+            ["Шорты штанов", "Штани-шорти", "pants-shorts"],
+            ["поло", "поло", "polo"],
+            ["Рубашки", "Сорочки", "shirts"],
+            ["Пижама", "піжама", "pajamas"],
+            ["головные уборы", "капелюхи", "hats"],
+            ["колпачки", "шапки", "caps"],
+            ["Трусы", "Переджарні", "underpants"],
+            ["Сувениры", "сувеніри", "souvenirs"],
+            ["мемы", "Мемати", "memes"]
+        ],
+        "read_more": ["Подробнее", "Детальнiшу", "Read More"]
+    },
+    "faq": {
+        "General_questions_title": [
+            "Общие вопросы",
+            "Загальні питання",
+            "General questions"
+        ],
+        "General_questions": [
+            "<h3>Зачем все это?</h3> <div> Вызывающе, дорого, престижно — это понятия, которыми руководствуются рабы моды. Наша продукция является жестом неуважения к людям гламурного разума. </div> <h3>Почему так дорого?</h3> <div> Мы используем одну из самых дорогих тканей и материалов в наших изделиях, в то время как весь рынок нацелен на дешевое производство. </div> <h3>Будет ли еще товар, кроме футболок, свитшотов и т.д?</h3> <div> Все зависит от спроса. Производство качественных вещей дорогостоящее, поэтому мы сначала рассуждаем: нужна ли эта новая вещь. Сейчас мы планируем запустить производство новых рюкзаков. </div> <h3>Что именно отличает ваш товар от других?</h3> <div> Смелость, в первую очередь. Нам плевать, что написано на футболке. Главное – удобство. Мы придирчивы ко всем мелочам и наши бирки тому подтверждение. Также, к товарам прилагается оригинальная подпись Алексея Шевцова, отражающая наше неравнодушие к покупателю. </div> <h3>Что с качеством?</h3> <div>Мы не делаем то, чего бы сами не использовали.</div> <h3>Что такое 'трек-номер' и где его искать?</h3> <div> Трек-номер – это номер, с помощью которого вы можете отслеживать местоположение ваших вещей. Найти его вы можете в личном кабинете на сайте, в вашем электронном ящике, а также в сообщении на телефоне после отправки посылки. </div> ",
+            " <h3> Чому все це? </h3> <div> Зухвало, дорогі, престижні - це поняття, з якими Керуються модні раби. Наша продукція - це жест неповага до людей гламурного розуму. </div> <h3> Чому це так дорого? </h3> <div> Ми використовуємо одну з найдорожчих тканин та матеріалів у наших продукція, хоча весь ринок спрямований на дешевий виробництво. </div> <h3> Чи буде більше товарів, крім t -сорочок, толстовків тощо? </h3> <div> Все залежить від попиту. Виробництво якісних речей дорого, тому ми спочатку: чи це нове річ. Тепер ми плануємо запустити виробництво нових рюкзаків. </div> <h3> Що саме відрізняє ваш продукт від інших? </h3> <div> Мужність, перш за все. Нам не байдуже, на що написано T -сорочка. Головне - зручність. Ми прискіпливі до всіх дрібниць і Наші теги підтверджені. Також товари додаються Оригінальний підпис Олексей Шевцов, що відображає наш Байдужість до покупця. </div> <h3> а як щодо якості? </h3> <div> ми не робимо того, чого ми самі не використовуємо. </div> <h3> Що таке 'трек-номер' і де його шукати? </h3> <div> Номер треку - це номер, з яким ви можете відстежувати Розташування ваших речей. Ви можете знайти його в особистому офіс на сайті, у вашій електронній коробці, а також у Повідомлення по телефону після надсилання посилки </div> ",
+            "<h3> Why all this? </h3> <div> Defiantly, expensive, prestigious - these are concepts with which Fashion slaves are guided. Our products are a gesture disrespect for people of the glamorous mind. </div> <h3> Why is it so expensive? </h3> <div> We use one of the most expensive fabrics and materials in our products, while the entire market is aimed at cheap production. </div> <h3> Will there be more goods, except for T -shirts, sweatshirts, etc.? </h3> <div> It all depends on demand. Production of quality things expensive, so we first reason: whether this new thing. Now we plan to launch the production of new backpacks. </div> <h3> What exactly distinguishes your product from others? </h3> <div> Courage, first of all. We do not care what is written on T -shirt. The main thing is convenience. We are picky to all the little things and Our tags are confirmed. Also, the goods are attached Original signature of Alexei Shevtsov, reflecting our Indifference to the buyer. </div> <h3> What about quality? </h3> <div> We do not do what we ourselves do not use. </div> <h3> What is a 'track-number' and where to look for it? </h3> <div> The track number is the number with which you can track The location of your things. You can find it in your personal office on the site, in your electronic box, as well as in message on the phone after sending the parcel. </div>"
+        ],
+
+        "Delivery_and_payment_title": [
+            "Доставка и оплата",
+            "Доставка та оплата",
+            "Delivery and payment"
+        ],
+        "Delivery_and_payment": [
+            "<h3>Информация</h3><div>Оплатить свой заказ вы можете в разделе «корзина», выбравсоответствующий товар.</div><div>Следуйте инструкциям. </div><div>Оплата производится банковскими картами Visa или MasterСard.</div><div>После оплаты ваш товар проходит проверку, затем ваш заказоформляет администрация и в течение 48 часов запрос будетобработан со статусом «заказ принят»</div><div>Отправка заказов осуществляется в течение 1 – 3 рабочих днейпосле принятия их администратором.</div><div>Доставка по Украине осуществляется компанией «Новая Почта».Посылка приходит в течение 1-2 рабочих дней с даты отправкизаказа. Пакет следует забрать в течение 5-ти дней с моментадоставки. После 5-ти дней компания «Новая Почта» отправляетпосылку обратно отправителю. Доставку за пределы Украиныосуществляет компания «УкрПочта», посылка приходит в течение7-21 рабочих дней с даты отгрузки заказа.</div><div>Срок отправки посылки зависит от выбранных товаров. </div><h3>Как формируется стоимость доставки?</h3><div>Наше производство и склад размещается в Украине. Отправляяпосылки за границу «УкрПочтой» и другими почтовыми службамистоимость посылки зависит от ее веса. Габариты (размеры) неимеют значения.</div><div>Каждый товар имеет свой вес: футболки от 170 до 260 грамм,свитшоты от 400 до 700, худые до 850 и так далее. Это зависит отразмера XS-3XL. Поэтому при заказе футболки, если добавитьсвитшот, цена доставки увеличится (из-за веса посылки). До 500грамм одна цена, до 1000 вторая, до 2000 грамм третья, и выше. ВУкраине цена доставки от 70 гривен.</div><div>Доставка за границу компанией «УкрПочта» оплачивается сразу насайте. Доставка по Украине компанией `Новая Почта` оплачиваетсяпри получении. (На сайте вы платите только за товар)</div><h3>Какие комиссии платежных систем?</h3><div>У платежной системы Wayforpay комиссия 0%, но при оплатепроисходит конвертация, если оплата происходит в долларах, или влюбой другой валюте. Так как мы располагаемся в Украине, товалюта с которой мы работаем – гривна. Для клиентов из Украиныкомиссий и конвертаций нет. В платежной системе Interkassaнаходится комиссия от 3 до 5.5%.</div>",
+            "<h3> Інформація </h3><div>Ви можете заплатити за своє замовлення в розділі 'Кошик', вибравшивідповідні товари.</div><div> Дотримуйтесь інструкцій. </div><div>Оплата здійснюється банківською карткою Visa або Mastersard.</div><div>Після оплати проходить ваш товар, потім ваше замовленняАдміністрація виконується і протягом 48 годин буде запитОбробляється зі статусом 'замовлення прийнятого'</div><div>Надсилання замовлень здійснюється протягом 1 - 3 робочих днівПісля їх прийняття адміністратором.</div><div>Доставка в Україні здійснюється новою поштою.Пакет надходить протягом 1-2 робочих днів з дати надсиланняПорядок. Пакет слід приймати протягом 5 днів з моментудоставка. Через 5 днів компанія 'Нова пошта' надсилаєПакет назад до відправника. Доставка за межами Україниздійснює компанію 'ukrposhta', пакет надходить всередині7-21 робочі дні з дати відвантаження замовлення.</div><div> Кінцевий термін надсилання посилки залежить від вибраних товарів. </div><h3> Як коштує доставка? </h3> форми?<div>Наша виробництво та склад розташовані в Україні. НадсиланняПосилки за кордоном 'Укрпошта' та інші поштові послугиВартість посилки залежить від її ваги. Розміри (розміри) неЄ значення.</div><div>Кожен продукт має свою вагу: t -сорочки від 170 до 260 грам,Svitshots від 400 до 700, тонкий до 850 тощо. Це залежить відРозмір XS-3XL. Тому при замовленні t -сорочки, якщо додатиSvitshot, ціна доставки збільшиться (через вагу посилки). До 500Грам - це одна ціна, до 1000 секунд, до 2000 грам третього і вище. УЦіна доставки України від 70 Гривніас.</div><div>Доставка за кордоном Укрпоштою виплачується негайно доСайт. Доставка в Україні компанією `Нова пошта виплачуєтьсяпри отриманні. (На сайті ви платите лише за товари)</div><h3> Які комісії платіжних систем? </h3><div>Система оплати Wayforpay має комісію 0%, але при оплатіконверсія відбувається, якщо оплата відбувається в доларах, або вбудь -яка інша валюта. Оскільки ми знаходимося в Україні, тодіВалюта, з якою ми працюємо, - це Гривнія. Для клієнтів з УкраїниНемає комісій та перетворень. В платіжній системі InterkassaКомісія розташована від 3 до 5,5%.</div>",
+            "<h3> Information </h3><div>you can pay your order in the' Basket 'section by selecting thecorresponding product.</div><div> Follow the instructions. </div><div>After payment, your product is checking, then your order is madeby the administration and within 48 hours the request will beprocessed with the status of “Order accepted”</div><div>Sending orders is carried out within 1 - 3 workers Days aftertheir adoption by the administrator.</div><div>Delivery in Ukraine is carried out by the company 'New Mail'.The package arrives within 1-2 business days from the date ofsending the order. The package should be taken within 5 daysfrom the date of delivery. After 5 days, the company NovayaPosit sends the parcel back to the sender. Delivery is carriedout by Ukraine Ukrposhta, the parcel comes within 7-21 businessdays from the date of shipment of the order.</div><div> Depends From the selected goods. </div><h3> How is the cost of delivery? </h3><div>Our production and warehouse is located in Ukraine. By sendingparcels abroad to Ukrposhta and other postal services, the costof the parcel depends on its weight. Dimensions (dimensions) donot matter.</div><div>Each product has its own weight: T -shirts from 170 to 260grams, sweatshirts from 400 to 700, thin to 850 and so on. Itdepends on the size of the XS-3XL. Therefore, when ordering aT-shirt, if you add a sweatshirt, the delivery price willincrease (due to the weight of the parcel). Up to 500 grams oneprice, up to 1000 second, up to 2000 grams of the third, andabove. In Ukraine, delivery price from 70 hryvnias.</div><div>Delivery abroad by Ukrposhta is paid immediately on the site.Delivery in Ukraine by the company `New Mail is paid uponreceipt. (On the site you pay only for the goods)</div><h3> What are the commission of payment systems? </h3><div>The payment system WayForpay is 0%, but when paying it isconverted if payment takes place in dollars, or in any Anothercurrency. Since we are located in Ukraine, the currency withwhich we work is a hryvnia. There are no commissions andconversions from Ukraine from Ukraine. The Interkassa paymentsystem has a commission from 3 to 5.5%.</div>"
+        ]
+    },
+    "checkout": {
+        "Size": ["Размер", "Розмір", "Size"],
+        "Quantity": ["Количество", "Кількість", "Quantity"],
+
+        "Cost_of_the_items": [
+            "Стоимость товаров",
+            "Вартість товарів",
+            "The cost of goods"
+        ],
+        "Delivery_cost": [
+            "Стоимость доставки",
+            "Вартість доставки",
+            "Cost of delivery"
+        ],
+        "Total_due": ["Итого к оплате","оплати", "Total due"]
+    }
+}
