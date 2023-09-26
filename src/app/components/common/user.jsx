@@ -19,11 +19,14 @@ import { gsap } from "gsap";
 const timeline = gsap.timeline({});
 
 const User = ({ black_relocation }) => {
-    const dispatch = useDispatch();
-    const isLoggedIn = useSelector(getIsLoggedIn());
     const currentUser = useSelector(getCurrentUserData());
+    const isLoggedIn = useSelector(getIsLoggedIn());
     const [rend, setRend] = useState(false);
-
+    const dispatch = useDispatch();
+    const [country, setCountry] = useState("");
+    const [number, setNumber] = useState();
+    const tl = useRef(timeline);
+    const app = useRef(null);
     const defaultData = {
         name: "",
         surname: "",
@@ -36,14 +39,6 @@ const User = ({ black_relocation }) => {
         ...currentUser,
         dat: { ...defaultData }
     });
-    const [country, setCountry] = useState("");
-    const [number, setNumber] = useState();
-    const handleChange = (target) => {
-        setData((prevState) => ({
-            ...prevState,
-            dat: { ...prevState.dat, [target.name]: target.value }
-        }));
-    };
     useEffect(() => {
         setData({
             ...currentUser
@@ -52,6 +47,13 @@ const User = ({ black_relocation }) => {
         setCountry(currentUser.dat.country);
         setRend(false);
     }, []);
+
+    const handleChange = (target) => {
+        setData((prevState) => ({
+            ...prevState,
+            dat: { ...prevState.dat, [target.name]: target.value }
+        }));
+    };
 
     const [vizible_input, setVizible_input] = useState({
         up: true,
@@ -77,9 +79,8 @@ const User = ({ black_relocation }) => {
         );
     };
 
-    const tl = useRef(timeline);
-    const app = useRef(null);
-
+    //--------------------
+    const [red, setRed] = useState(true);
     const black_relocation_close_function_first_page_launch = () => {
         const ctx = gsap.context(() => {
             tl.current
@@ -101,7 +102,6 @@ const User = ({ black_relocation }) => {
         }, app.current);
         return () => ctx.revert();
     };
-
     const black_relocation_close_function = () => {
         const ctx = gsap.context(() => {
             tl.current
@@ -128,12 +128,9 @@ const User = ({ black_relocation }) => {
         }, app.current);
         return () => ctx.revert();
     };
-
-    const [red, setRed] = useState(true);
     useEffect(() => {
         setRed((prevState) => !prevState);
     }, [history1]);
-
     useEffect(() => {
         if (red) {
             black_relocation_close_function_first_page_launch();
@@ -141,7 +138,6 @@ const User = ({ black_relocation }) => {
             black_relocation_close_function();
         }
     }, [black_relocation]);
-
     if (isLoggedIn) {
         return (
             <div style={{ position: "relative" }}>
@@ -396,7 +392,7 @@ const User = ({ black_relocation }) => {
         );
     } else {
         history.push(`/`);
-        return "load";
+        return "";
     }
 };
 

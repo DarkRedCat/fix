@@ -1,29 +1,19 @@
-import React, {
-    useEffect,
-    useState,
-    Component,
-    useContext,
-    useRef
-} from "react";
-import { LangContext } from "../../App";
-import { useSelector, useDispatch } from "react-redux";
-import history from "../../utils/history";
-import TextField from "../form/textField";
-
-import { gsap } from "gsap";
-
-const timeline = gsap.timeline({});
-
+import React, { useEffect, useState, useContext, useRef } from "react";
 import {
     getCurrentUserData,
     updateUser,
     getIsLoggedIn
 } from "../../store/users";
+import { LangContext } from "../../App";
+import { useSelector, useDispatch } from "react-redux";
 import { CountryDropdown } from "react-country-region-selector";
-
-import "react-phone-number-input/style.css";
+import { gsap } from "gsap";
+import history from "../../utils/history";
+import TextField from "../form/textField";
 import PhoneInput from "react-phone-number-input";
 import LogOut from "../form/logOut";
+import "react-phone-number-input/style.css";
+const timeline = gsap.timeline({});
 
 const Checkout = ({
     textData,
@@ -34,6 +24,11 @@ const Checkout = ({
 }) => {
     const currentUser = useSelector(getCurrentUserData());
     const cart = JSON.parse(localStorage.getItem("cart"));
+    const [country, setCountry] = useState("");
+    const [number, setNumber] = useState();
+    const langNum = useContext(LangContext);
+    const tl = useRef(timeline);
+    const app = useRef(null);
     const [cart2, setCart2] = useState(
         localStorage.getItem("cart") != null
             ? JSON.parse(localStorage.getItem("cart"))
@@ -53,14 +48,6 @@ const Checkout = ({
             ...defaultData
         }
     });
-    const [country, setCountry] = useState("");
-    const [number, setNumber] = useState();
-    const handleChange = (target) => {
-        setData((prevState) => ({
-            ...prevState,
-            dat: { ...prevState.dat, [target.name]: target.value }
-        }));
-    };
     useEffect(() => {
         setData({
             dat: {
@@ -73,7 +60,12 @@ const Checkout = ({
             setCountry(currentUser.dat.country);
         }
     }, []);
-    const langNum = useContext(LangContext);
+    const handleChange = (target) => {
+        setData((prevState) => ({
+            ...prevState,
+            dat: { ...prevState.dat, [target.name]: target.value }
+        }));
+    };
     const lang = (data, dontProdDta) => {
         if (dontProdDta == "dontProdDta") {
             return data[langNum];
@@ -106,10 +98,7 @@ const Checkout = ({
             return (delivery + finalCost).toFixed(2);
         }
     };
-
-    const tl = useRef(timeline);
-    const app = useRef(null);
-
+    // --------------------------------
     const black_relocation_close_function_first_page_launch = () => {
         const ctx = gsap.context(() => {
             tl.current
@@ -132,7 +121,6 @@ const Checkout = ({
         }, app.current);
         return () => ctx.revert();
     };
-
     const black_relocation_close_function = () => {
         const ctx = gsap.context(() => {
             tl.current
@@ -163,7 +151,6 @@ const Checkout = ({
     useEffect(() => {
         setRed((prevState) => !prevState);
     }, [location.pathname.split("/")[1]]);
-
     useEffect(() => {
         if (red) {
             black_relocation_close_function_first_page_launch();
@@ -172,6 +159,7 @@ const Checkout = ({
         }
     }, [black_relocation]);
     const handleSubmit = () => {};
+    // --------------------------------
     return (
         <div>
             <div ref={app}>

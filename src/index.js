@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import ReactDOM from "react-dom";
-import "./style/scss/AllStyles.scss";
+import "./app/style/scss/AllStyles.scss";
 import reportWebVitals from "./reportWebVitals";
 
 import App from "./app/App";

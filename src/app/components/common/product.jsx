@@ -36,37 +36,45 @@ const Product = ({
         }
     };
 
+    const [windowWidth, setWindowWidth] = React.useState(window.screen.width);
+    const [prodData, setProdData] = useState({ [locationName]: defaultData });
+    const data = useSelector(getProductsbyId(locationName)) || "null";
+    const allData = useSelector(getProductsList(data[0].category)) || "null";
+    const tl = useRef(timeline);
+    const app = useRef(null);
+    React.useEffect(() => {
+        window.onresize = () => {
+            setWindowWidth(window.screen.width);
+        };
+
+        return () => {
+            window.onresize = false;
+        };
+    }, [windowWidth]);
     const location = useLocation();
     const locationName = location.pathname
         .replace("/product/", "")
         .replace("/", "");
-
-    const data = useSelector(getProductsbyId(locationName)) || "null";
-    const allData = useSelector(getProductsList(data[0].category)) || "null";
-
     const [act, setAct] = useState({
         one: null,
         two: null,
         three: null
     });
-
     const [smallCardData, setSmallCardData] = useState({
         one: null,
         two: null,
         three: null
     });
-
     const defaultData = {
         AllSize: [],
         size: "S",
         quantity: 1
     };
-    const [prodData, setProdData] = useState({ [locationName]: defaultData });
-
     useEffect(() => {
         setProdData({ [locationName]: defaultData });
     }, [location]);
 
+    //--------------------------
     const sendForm = (data) => {
         let prodDataUpdate = {
             ...prodData[data._id],
@@ -91,7 +99,6 @@ const Product = ({
 
         clickSendButton();
     };
-
     const renderTable = (text) => {
         if (text !== null) {
             const rendertable = (table) => {
@@ -112,7 +119,7 @@ const Product = ({
                         {" "}
                         <img
                             //  src={text.img}
-                            src={require("../../../img/pays.webp")}
+                            src={require("../../img/pays.webp")}
                             alt=""
                         />
                     </div>
@@ -149,6 +156,7 @@ const Product = ({
         if (data !== null) {
             return (
                 <div className="prod_container  prod_container_mod">
+                    <div></div>
                     <h1 className="prod_container_title">{lang(data.name)}</h1>
                     <div className="prod_container_body">
                         <div className="prod_container_l_mod">
@@ -159,7 +167,7 @@ const Product = ({
                             >
                                 <img
                                     // src={data.img[0]}
-                                    src={require("../../../img/pays.webp")}
+                                    src={require("../../img/pays.webp")}
                                     alt=""
                                 />
                             </div>
@@ -314,7 +322,7 @@ const Product = ({
                                     {lang(textData.button, "dontProdDta")}
                                     <img
                                         className="up1 container_r_button_img"
-                                        src={require("../../../img/ar2.png")}
+                                        src={require("../../img/ar2.png")}
                                     />
                                 </div>
                             </div>
@@ -324,7 +332,6 @@ const Product = ({
             );
         }
     };
-
     const ChangeProdData = (value, id, type) => {
         if (type[0] == "size") {
             setProdData((prevState) => ({
@@ -364,10 +371,7 @@ const Product = ({
             return `${newText[0]}`;
         }
     };
-
-    const tl = useRef(timeline);
-    const app = useRef(null);
-
+    //--------------------------
     const black_relocation_close_function_first_page_launch = () => {
         const ctx = gsap.context(() => {
             tl.current
@@ -466,7 +470,7 @@ const Product = ({
                                     <SwiperSlide key={Math.random()}>
                                         <img
                                             //  src={i}
-                                            src={require("../../../img/pays.webp")}
+                                            src={require("../../img/pays.webp")}
                                             alt="1"
                                         />
                                     </SwiperSlide>
@@ -584,7 +588,7 @@ const Product = ({
                                     {lang(textData.button, "dontProdDta")}
                                     <img
                                         className="up1 container_r_button_img"
-                                        src={require("../../../img/ar2.png")}
+                                        src={require("../../img/ar2.png")}
                                     />
                                 </div>
                             </div>
@@ -595,100 +599,376 @@ const Product = ({
                             {lang(textData.recommend, "dontProdDta")}
                         </h1>
                         <div className="prod_container_footer">
-                            <Swiper
-                                dir="rtl"
-                                navigation={true}
-                                loop={true}
-                                loopFillGroupWithBlank={true}
-                                slidesPerView={
-                                    allData.length > 2 && allData.length < 4
-                                        ? allData.length
-                                        : allData.length < 2
-                                        ? 2
-                                        : allData.length > 4
-                                        ? 4
-                                        : allData.length
-                                }
-                                className="mySwiper swiper_container"
-                            >
-                                {allData.map((m) => (
-                                    <SwiperSlide key={m._id}>
-                                        <div
-                                            className="footer_swiper"
-                                            onClick={() => {
-                                                setProdData((prevState) => ({
-                                                    ...prevState,
-                                                    [m._id]: {
-                                                        ...defaultData,
-                                                        ...prevState[m._id]
-                                                    }
-                                                }));
+                            {windowWidth > 1300 ? (
+                                <Swiper
+                                    dir="rtl"
+                                    navigation={true}
+                                    loop={true}
+                                    loopFillGroupWithBlank={true}
+                                    slidesPerView={
+                                        allData.length > 2 && allData.length < 4
+                                            ? allData.length
+                                            : allData.length < 2
+                                            ? 2
+                                            : allData.length > 4
+                                            ? 4
+                                            : allData.length
+                                    }
+                                    className="mySwiper swiper_container"
+                                >
+                                    {allData.map((m) => (
+                                        <SwiperSlide key={m._id}>
+                                            <div
+                                                className="footer_swiper"
+                                                onClick={() => {
+                                                    setProdData(
+                                                        (prevState) => ({
+                                                            ...prevState,
+                                                            [m._id]: {
+                                                                ...defaultData,
+                                                                ...prevState[
+                                                                    m._id
+                                                                ]
+                                                            }
+                                                        })
+                                                    );
 
-                                                setSmallCardData(
-                                                    (prevState) => ({
-                                                        ...prevState,
-                                                        one: m
-                                                    })
-                                                );
-                                                setAct((prevState) => {
-                                                    if (prevState.one == null) {
-                                                        return {
+                                                    setSmallCardData(
+                                                        (prevState) => ({
                                                             ...prevState,
-                                                            one: true
-                                                        };
-                                                    }
-                                                    if (
-                                                        typeof prevState.one ==
-                                                        "boolean"
-                                                    ) {
-                                                        return {
-                                                            ...prevState,
-                                                            one: !prevState.one
-                                                        };
-                                                    }
-                                                });
-                                            }}
-                                        >
-                                            <div className="footer_swiper_img">
-                                                <img
-                                                    // src={m.img[0]}
-                                                    src={require("../../../img/pays.webp")}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="footer_swiper_cost_container">
-                                                <div className="footer_swiper_cost">
-                                                    <div>
-                                                        {`${invers(
-                                                            ChangeCurrency(
-                                                                m.Cost,
-                                                                CurrentCurrency
-                                                            ),
-                                                            "red"
-                                                        )}`}
-                                                    </div>
-                                                    <div>
-                                                        {`${invers(
-                                                            ChangeCurrency(
-                                                                m.Cost,
-                                                                CurrentCurrency
-                                                            )
-                                                        )}`}
+                                                            one: m
+                                                        })
+                                                    );
+                                                    setAct((prevState) => {
+                                                        if (
+                                                            prevState.one ==
+                                                            null
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: true
+                                                            };
+                                                        }
+                                                        if (
+                                                            typeof prevState.one ==
+                                                            "boolean"
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: !prevState.one
+                                                            };
+                                                        }
+                                                    });
+                                                }}
+                                            >
+                                                <div className="footer_swiper_img">
+                                                    <img
+                                                        // src={m.img[0]}
+                                                        src={require("../../img/pays.webp")}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div className="footer_swiper_cost_container">
+                                                    <div className="footer_swiper_cost">
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                ),
+                                                                "red"
+                                                            )}`}
+                                                        </div>
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                )
+                                                            )}`}
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div className="footer_swiper_name">
+                                                    {lang(m.name)}
+                                                </div>
                                             </div>
-                                            <div className="footer_swiper_name">
-                                                {lang(m.name)}
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            ) : windowWidth > 900 ? (
+                                <Swiper
+                                    dir="rtl"
+                                    navigation={true}
+                                    loop={true}
+                                    loopFillGroupWithBlank={true}
+                                    slidesPerView={2}
+                                    className="mySwiper swiper_container"
+                                >
+                                    {allData.map((m) => (
+                                        <SwiperSlide key={m._id}>
+                                            <div
+                                                className="footer_swiper"
+                                                onClick={() => {
+                                                    setProdData(
+                                                        (prevState) => ({
+                                                            ...prevState,
+                                                            [m._id]: {
+                                                                ...defaultData,
+                                                                ...prevState[
+                                                                    m._id
+                                                                ]
+                                                            }
+                                                        })
+                                                    );
+
+                                                    setSmallCardData(
+                                                        (prevState) => ({
+                                                            ...prevState,
+                                                            one: m
+                                                        })
+                                                    );
+                                                    setAct((prevState) => {
+                                                        if (
+                                                            prevState.one ==
+                                                            null
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: true
+                                                            };
+                                                        }
+                                                        if (
+                                                            typeof prevState.one ==
+                                                            "boolean"
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: !prevState.one
+                                                            };
+                                                        }
+                                                    });
+                                                }}
+                                            >
+                                                <div className="footer_swiper_img">
+                                                    <img
+                                                        // src={m.img[0]}
+                                                        src={require("../../img/pays.webp")}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div className="footer_swiper_cost_container">
+                                                    <div className="footer_swiper_cost">
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                ),
+                                                                "red"
+                                                            )}`}
+                                                        </div>
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                )
+                                                            )}`}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="footer_swiper_name">
+                                                    {lang(m.name)}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            ) : windowWidth > 400 ? (
+                                <Swiper
+                                    dir="rtl"
+                                    navigation={true}
+                                    loop={true}
+                                    loopFillGroupWithBlank={true}
+                                    slidesPerView={1}
+                                    className="mySwiper swiper_container"
+                                >
+                                    {allData.map((m) => (
+                                        <SwiperSlide key={m._id}>
+                                            <div
+                                                className="footer_swiper"
+                                                onClick={() => {
+                                                    setProdData(
+                                                        (prevState) => ({
+                                                            ...prevState,
+                                                            [m._id]: {
+                                                                ...defaultData,
+                                                                ...prevState[
+                                                                    m._id
+                                                                ]
+                                                            }
+                                                        })
+                                                    );
+
+                                                    setSmallCardData(
+                                                        (prevState) => ({
+                                                            ...prevState,
+                                                            one: m
+                                                        })
+                                                    );
+                                                    setAct((prevState) => {
+                                                        if (
+                                                            prevState.one ==
+                                                            null
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: true
+                                                            };
+                                                        }
+                                                        if (
+                                                            typeof prevState.one ==
+                                                            "boolean"
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: !prevState.one
+                                                            };
+                                                        }
+                                                    });
+                                                }}
+                                            >
+                                                <div className="footer_swiper_img">
+                                                    <img
+                                                        // src={m.img[0]}
+                                                        src={require("../../img/pays.webp")}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div className="footer_swiper_cost_container">
+                                                    <div className="footer_swiper_cost">
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                ),
+                                                                "red"
+                                                            )}`}
+                                                        </div>
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                )
+                                                            )}`}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="footer_swiper_name">
+                                                    {lang(m.name)}
+                                                </div>
+                                            </div>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            ) : (
+                                <Swiper
+                                    dir="rtl"
+                                    navigation={true}
+                                    loop={true}
+                                    loopFillGroupWithBlank={true}
+                                    slidesPerView={1}
+                                    className="mySwiper swiper_container"
+                                >
+                                    {allData.map((m) => (
+                                        <SwiperSlide key={m._id}>
+                                            <div
+                                                className="footer_swiper"
+                                                onClick={() => {
+                                                    setProdData(
+                                                        (prevState) => ({
+                                                            ...prevState,
+                                                            [m._id]: {
+                                                                ...defaultData,
+                                                                ...prevState[
+                                                                    m._id
+                                                                ]
+                                                            }
+                                                        })
+                                                    );
+
+                                                    setSmallCardData(
+                                                        (prevState) => ({
+                                                            ...prevState,
+                                                            one: m
+                                                        })
+                                                    );
+                                                    setAct((prevState) => {
+                                                        if (
+                                                            prevState.one ==
+                                                            null
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: true
+                                                            };
+                                                        }
+                                                        if (
+                                                            typeof prevState.one ==
+                                                            "boolean"
+                                                        ) {
+                                                            return {
+                                                                ...prevState,
+                                                                one: !prevState.one
+                                                            };
+                                                        }
+                                                    });
+                                                }}
+                                            >
+                                                <div className="footer_swiper_img">
+                                                    <img
+                                                        // src={m.img[0]}
+                                                        src={require("../../img/pays.webp")}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div className="footer_swiper_cost_container">
+                                                    <div className="footer_swiper_cost">
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                ),
+                                                                "red"
+                                                            )}`}
+                                                        </div>
+                                                        <div>
+                                                            {`${invers(
+                                                                ChangeCurrency(
+                                                                    m.Cost,
+                                                                    CurrentCurrency
+                                                                )
+                                                            )}`}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="footer_swiper_name">
+                                                    {lang(m.name)}
+                                                </div>
+                                            </div>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            )}
                         </div>
                     </div>
                 </div>
             ) : (
-                "load"
+                ""
             )}
         </div>
     );

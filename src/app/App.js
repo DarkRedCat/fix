@@ -24,9 +24,6 @@ export const UserContext = createContext();
 export const LangContext = createContext();
 
 function App() {
-    document.querySelector("#root").style.backgroundImage =
-        "url(https://fastly.picsum.photos/id/702/3840/2160.jpg?hmac=uUBHCX_0404rxwbAdJx0OTkuCb0IglkhTmn5hFJ3qcE)";
-
     const isLoading = useSelector(getCategoryLoadingStatus());
     const category = useSelector(getCategory());
     const [click, setClick] = useState(null);
@@ -130,6 +127,11 @@ function App() {
     const black_relocation_change = () => {
         setBlack_relocation((prevState) => !prevState);
     };
+
+    const [close_pocetCat, setClose_pocetCat] = useState(true);
+    const setClose_pocetCat_change = () => {
+        setClose_pocetCat((prevState) => !prevState);
+    };
     //***************** */
     const yakor = useRef(null);
     const yakorFun = (yakor) => {
@@ -172,6 +174,10 @@ function App() {
                                     black_relocation={black_relocation}
                                     black_relocation_change={
                                         black_relocation_change
+                                    }
+                                    close_pocetCat={close_pocetCat}
+                                    setClose_pocetCat_change={
+                                        setClose_pocetCat_change
                                     }
                                     propsYakor={propsYakor}
                                 />
@@ -276,15 +282,7 @@ function App() {
                                     />
                                     <Redirect to="/" />
                                 </Switch>
-                                <Footer
-                                    category={category}
-                                    textData={textData.header}
-                                    black_relocation={black_relocation}
-                                    black_relocation_change={
-                                        black_relocation_change
-                                    }
-                                    propsYakor={propsYakor}
-                                />
+                                <Footer />
                             </LangContext.Provider>
                         </UserContext.Provider>
                     </>

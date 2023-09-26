@@ -14,7 +14,6 @@ const Card = ({
     textData
 }) => {
     const langNum = useContext(LangContext);
-    //
     const lang = (data, dontProdDta) => {
         if (dontProdDta == "dontProdDta") {
             return data[langNum];
@@ -28,7 +27,6 @@ const Card = ({
             }
         }
     };
-
     return (
         <>
             <div
@@ -47,7 +45,7 @@ const Card = ({
                     </div>
                     <img
                         className="card_img"
-                        src={require("../../../img/pays.webp")}
+                        src={require("../../img/pays.webp")}
                     />
                     <div className="card_container__head_box">
                         {lang(textData.read_more, "dontProdDta")}...

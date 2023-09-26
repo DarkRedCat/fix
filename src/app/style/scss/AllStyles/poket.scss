@@ -4,6 +4,9 @@
         width: 100%;
         background: rgba(72, 72, 80, 0.5);
         opacity: 0;
+        display: none;
+        position: absolute;
+        z-index: 1;
     }
     .pocet-one {
         overflow-y: scroll;
@@ -14,13 +17,18 @@
         right: -300%;
         top: 0;
         z-index: 1001;
+
+        position: fixed;
+        height: 100%;
+        // width: 100%;
+
+        top: 0;
+        z-index: 100;
     }
 }
-
 .pocet-one {
     scrollbar-width: none;
 }
-
 .pocet-one {
     font-family: "Futura", sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -31,21 +39,6 @@
     width: 0;
     height: 0;
 }
-
-.pocet-active {
-    // overflow: scroll;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    right: 0;
-    top: 0;
-    z-index: 100;
-
-    .pocet-two {
-        opacity: 1;
-    }
-}
-
 .pocet_head {
     display: flex;
     justify-content: center;
@@ -62,7 +55,6 @@
         margin-right: 25px;
     }
 }
-
 .pocet_body {
     border-bottom: 2px solid #111113;
     .pocet_body_title {
@@ -175,6 +167,17 @@
     align-items: center;
     justify-content: center;
 }
+.pocetCat {
+    .pocet-one {
+        .pocet_body {
+            .cat__section_2_li > .li {
+                font-size: 120%;
+                padding: 10px;
+                border: 1px solid #bbb6b694;
+            }
+        }
+    }
+}
 .r {
     margin: 0;
 }
@@ -214,7 +217,6 @@
         margin: 10px 0;
     }
 }
-
 .pocet_container_r_del {
     position: absolute;
     border: 1px solid;
@@ -242,7 +244,4 @@
         background: #111113;
         color: white;
     }
-}
-.category_page__body {
-    min-height: 100vh;
 }

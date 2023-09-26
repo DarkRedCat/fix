@@ -6,6 +6,13 @@ const timeline = gsap.timeline({});
 
 const Faq = ({ textData, black_relocation }) => {
     const langNum = useContext(LangContext);
+    const dropdown_wto = useRef(null);
+    const dropdown_one = useRef(null);
+    const textBlock = useRef(null);
+    const textBlock2 = useRef(null);
+    const tl = useRef(timeline);
+    const text = useRef(null);
+    const app = useRef(null);
 
     const lang = (data, dontProdDta) => {
         if (dontProdDta == "dontProdDta") {
@@ -20,16 +27,6 @@ const Faq = ({ textData, black_relocation }) => {
             }
         }
     };
-
-    const dropdown_wto = useRef(null);
-    const dropdown_one = useRef(null);
-    const textBlock = useRef(null);
-    const textBlock2 = useRef(null);
-
-    const tl = useRef(timeline);
-    const text = useRef(null);
-    const app = useRef(null);
-
     const animate = (act, num) => {
         if (act !== undefined) {
             const ctx = gsap.context(() => {
@@ -55,6 +52,7 @@ const Faq = ({ textData, black_relocation }) => {
         }
     };
 
+    //--------------------------
     const black_relocation_close_function_first_page_launch = () => {
         const ctx = gsap.context(() => {
             tl.current
@@ -76,7 +74,6 @@ const Faq = ({ textData, black_relocation }) => {
         }, app.current);
         return () => ctx.revert();
     };
-
     const black_relocation_close_function = () => {
         const ctx = gsap.context(() => {
             tl.current
@@ -107,7 +104,6 @@ const Faq = ({ textData, black_relocation }) => {
     useEffect(() => {
         setRed((prevState) => !prevState);
     }, [location.pathname.split("/")[1]]);
-
     useEffect(() => {
         if (red) {
             black_relocation_close_function_first_page_launch();
@@ -115,6 +111,7 @@ const Faq = ({ textData, black_relocation }) => {
             black_relocation_close_function();
         }
     }, [black_relocation]);
+
     return (
         <div className="main_page container containerFaq">
             <div ref={app}>
@@ -146,7 +143,7 @@ const Faq = ({ textData, black_relocation }) => {
                         <div className="dropdown_ar">
                             <img
                                 className="up1"
-                                src={require("../../../img/ar2.png")}
+                                src={require("../../img/ar2.png")}
                             />
                         </div>
                     </div>
@@ -185,7 +182,7 @@ const Faq = ({ textData, black_relocation }) => {
                         <div className="dropdown_ar">
                             <img
                                 className="up1"
-                                src={require("../../../img/ar2.png")}
+                                src={require("../../img/ar2.png")}
                             />
                         </div>
                     </div>

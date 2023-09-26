@@ -7,17 +7,14 @@ const timeline3 = gsap.timeline({});
 
 const Modal = ({ fun, act, cl, className1 }) => {
     const className2 = className1 || "";
-
     const modal = useRef(null);
     const modalM = useRef(null);
-
-    const modalDocum1 = document.querySelectorAll(".modal_cont_log");
-    const modalDocum2 = document.querySelectorAll(".modal_cont_log2");
     const tl = useRef(timeline);
     const t2 = useRef(timeline2);
     const t3 = useRef(timeline3);
-
-    const CloseModalImg = document.querySelectorAll(".close");
+    const modalDocum1 = document.querySelectorAll(".modal_cont_log");
+    const modalDocum2 = document.querySelectorAll(".modal_cont_log2");
+      const CloseModalImg = document.querySelectorAll(".close");
 
     const animate = (app, active) => {
         if (active !== undefined) {
@@ -77,7 +74,6 @@ const Modal = ({ fun, act, cl, className1 }) => {
     useEffect(() => {
         animate2(modal);
     }, []);
-
     useEffect(() => {
         if (act !== undefined && act !== null) {
             if (modalM.current !== null) {
@@ -105,6 +101,7 @@ const Modal = ({ fun, act, cl, className1 }) => {
             }
         }
     }, [act]);
+
     if (CloseModalImg[0]) {
         CloseModalImg[0].onclick = function () {
             closeModal(modalM);

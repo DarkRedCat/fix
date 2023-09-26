@@ -27,10 +27,72 @@ const Header = ({
     black_relocation_change,
     black_relocation,
     propsYakor,
+    close_pocetCat,
+    setClose_pocetCat_change,
     textData
 }) => {
     const isLoggedIn = useSelector(getIsLoggedIn());
     const langNum = useContext(LangContext);
+    /*------------------ */
+    const [windowWidth, setWindowWidth] = React.useState(window.screen.width);
+    React.useEffect(() => {
+        window.onresize = () => {
+            setWindowWidth(window.screen.width);
+        };
+
+        return () => {
+            window.onresize = false;
+        };
+    }, [windowWidth]);
+    /*------------------ */
+
+    const ed = useRef(null);
+    const ff = useRef(null);
+    const end1 = useRef(null);
+    const end2 = useRef(null);
+    const pocet = useRef(null);
+    const pocetCat = useRef(null);
+    const tl = useRef(timeline);
+    const t2 = useRef(timeline2);
+    const box_right_ul = useRef(null);
+    const red = useContext(UserContext);
+
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    const [act, setAct] = useState({
+        one: null,
+        two: null,
+        free: null,
+        four: null,
+        five: null
+    });
+    const [smallCardData, setSmallCardData] = useState({
+        one: null,
+        two: null,
+        three: null
+    });
+    const [cart2, setCart2] = useState(
+        localStorage.getItem("cart") != null
+            ? JSON.parse(localStorage.getItem("cart"))
+            : []
+    );
+
+    useEffect(() => {
+        document.body.classList.remove("no_scroll");
+    }, []);
+    useEffect(() => {
+        OpenClosePocet(pocet, "cl");
+        OpenClosePocet(pocetCat, "cl");
+    }, [close_pocetCat]);
+    useEffect(() => {
+        if (changeSendButton !== null) {
+            OpenClosePocet(pocet, "cl");
+            OpenClosePocet(pocetCat, "cl");
+            setCart2({ ...JSON.parse(localStorage.getItem("cart")) });
+        }
+    }, [changeSendButton]);
+
+    //---------------------
     const lang = (data, dontProdDta) => {
         if (dontProdDta == "dontProdDta") {
             return data[langNum];
@@ -44,65 +106,49 @@ const Header = ({
             }
         }
     };
-
-    /*------------------ */
-
-    /*------------------ */
-    const end1 = useRef(null);
-    const end2 = useRef(null);
-    const box_right_ul = useRef(null);
-
-    const ed = useRef(null);
-    const pocet = useRef(null);
-    const red = useContext(UserContext);
-    const tl = useRef(timeline);
-    const t2 = useRef(timeline2);
-
-    const animate = (act) => {
-        if (act !== undefined) {
-            const ctx = gsap.context(() => {
-                tl.current.to(".pocet-one", {
-                    ease: "power3.out",
-
-                    right: 0
-                });
-            }, pocet.current);
-            return () => ctx.revert();
-        } else {
-            const ctx = gsap.context(() => {
-                tl.current.to(".pocet-one", {
-                    ease: "power3.out",
-
-                    right: "-300px"
-                });
-            }, pocet.current);
-            return () => ctx.revert();
+    const hieDiv = () => {
+        if (ff.current.firstChild.lastChild !== null) {
+            document.querySelector(".modal_cont_log").childNodes[1].style.top =
+                ed.current.getBoundingClientRect().top + 50 + "px";
         }
     };
-    const animate2 = (act) => {
-        if (act !== undefined) {
+    const OpenClosePocet = (app, cl) => {
+        if (cl !== "cl") {
             const ctx = gsap.context(() => {
+                t2.current.to(".pocet-two", {
+                    function() {
+                        document.body.classList.add("no_scroll");
+                    },
+                    duration: 0,
+                    display: "block"
+                });
+                tl.current.to(".pocet-one", {
+                    right: 0
+                });
                 t2.current.to(".pocet-two", {
                     opacity: 1
                 });
-            }, pocet.current);
+            }, app.current);
             return () => ctx.revert();
         } else {
             const ctx = gsap.context(() => {
+                tl.current.to(".pocet-one", {
+                    duration: 0.6,
+                    right: "-300px"
+                });
                 t2.current.to(".pocet-two", {
                     opacity: 0
                 });
-            }, pocet.current);
+                t2.current.to(".pocet-two", {
+                    duration: 0,
+                    display: "none",
+                    function() {
+                        document.body.classList.remove("no_scroll");
+                    }
+                });
+            }, app.current);
             return () => ctx.revert();
         }
-    };
-    const closePoc = () => {
-        animate();
-        animate2();
-        setTimeout(() => {
-            document.body.classList.remove("no_scroll");
-            pocet.current.classList.remove("pocet-active");
-        }, 1000);
     };
     const drop_down_menu_function = (el, app, act, time) => {
         const elClass = `.${el.current.classList[0]}`;
@@ -140,27 +186,6 @@ const Header = ({
             }, app.current);
             return () => ctx.revert();
         }
-    };
-
-    if (red !== null && end1.current !== null && end2.current !== null) {
-        if (
-            end2.current.parentElement.offsetParent !== red.parentElement ||
-            end2.current.parentElement.offsetParent !== red.parentElement
-        ) {
-            if (end2.current !== red.parentElement) {
-                drop_down_menu_function(end2, box_right_ul, undefined, t2);
-            }
-            if (end1.current !== red.parentElement) {
-                drop_down_menu_function(end1, box_right_ul, undefined, tl);
-            }
-        }
-    }
-
-    const no_scroll = () => {
-        document.body.classList.toggle("no_scroll");
-        pocet.current.classList.toggle("pocet-active");
-        animate(pocet);
-        animate2(pocet);
     };
     const renderLogin = (i) => {
         if (i == "login") {
@@ -229,45 +254,6 @@ const Header = ({
             );
         }
     };
-
-    const [act, setAct] = useState({
-        one: null,
-        two: null,
-        free: null,
-        four: null,
-        five: null
-    });
-    const [smallCardData, setSmallCardData] = useState({
-        one: null,
-        two: null,
-        three: null
-    });
-
-    const ff = useRef(null);
-    const hieDiv = () => {
-        if (ff.current.firstChild.lastChild !== null) {
-            document.querySelector(".modal_cont_log").childNodes[1].style.top =
-                ed.current.getBoundingClientRect().top + 50 + "px";
-        }
-    };
-
-    const cart = JSON.parse(localStorage.getItem("cart"));
-    const [cart2, setCart2] = useState(
-        localStorage.getItem("cart") != null
-            ? JSON.parse(localStorage.getItem("cart"))
-            : []
-    );
-
-    useEffect(() => {
-        if (changeSendButton !== null) {
-            no_scroll();
-            setCart2({ ...JSON.parse(localStorage.getItem("cart")) });
-        }
-    }, [changeSendButton]);
-    useEffect(() => {
-        document.body.classList.remove("no_scroll");
-        pocet.current.classList.remove("pocet-active");
-    }, []);
     const ChangeProdData = (value, id, type) => {
         if (type[0] == "size") {
             setCart2((prevState) => ({
@@ -351,7 +337,7 @@ const Header = ({
                             <img
                                 style={{ height: "100px" }}
                                 // src={data.img}
-                                src={require("../../../img/pays.webp")}
+                                src={require("../../img/pays.webp")}
                                 alt=""
                             />
                         </div>
@@ -436,7 +422,6 @@ const Header = ({
             </div>
         );
     };
-
     const renderTable = (text) => {
         if (text !== null) {
             const rendertable = (table) => {
@@ -457,7 +442,7 @@ const Header = ({
                         {" "}
                         <img
                             //  src={text.img}
-                            src={require("../../../img/pays.webp")}
+                            src={require("../../img/pays.webp")}
                             alt=""
                         />
                     </div>
@@ -490,7 +475,6 @@ const Header = ({
             return "";
         }
     };
-
     const renderCard = (id) => {
         const data0 = useSelector(getProductsbyId(id)) || "null";
         const data = data0[0];
@@ -508,7 +492,7 @@ const Header = ({
                             >
                                 <img
                                     // src={data.img[0]}
-                                    src={require("../../../img/pays.webp")}
+                                    src={require("../../img/pays.webp")}
                                     alt=""
                                 />
                             </div>
@@ -592,82 +576,6 @@ const Header = ({
                                     </div>
                                 </div>
                             </div>
-
-                            {/* <div className="container_r_size">
-                                {data.size.map((r) => {
-                                    if (prodData[data._id].size == r) {
-                                        return (
-                                            <div
-                                                key={r}
-                                                className="container_r_size_active"
-                                                onClick={() => {
-                                                    ChangeProdData(
-                                                        r,
-                                                        data._id,
-                                                        ["size"]
-                                                    );
-                                                }}
-                                            >
-                                                <span> {r} </span>
-                                            </div>
-                                        );
-                                    } else {
-                                        return (
-                                            <div
-                                                key={r}
-                                                onClick={() => {
-                                                    ChangeProdData(
-                                                        r,
-                                                        data._id,
-                                                        ["size"]
-                                                    );
-                                                }}
-                                            >
-                                                <span> {r} </span>
-                                            </div>
-                                        );
-                                    }
-                                })}
-                            </div>
-                            <div className="container_r_footer">
-                                <div className="container_r_quantity">
-                                    <div
-                                        onClick={() => {
-                                            ChangeProdData(
-                                                prodData[data._id].quantity,
-                                                data._id,
-                                                ["quantity", "-"]
-                                            );
-                                        }}
-                                    >
-                                        -
-                                    </div>
-                                    <div>{prodData[data._id].quantity}</div>
-                                    <div
-                                        onClick={() => {
-                                            ChangeProdData(
-                                                prodData[data._id].quantity,
-                                                data._id,
-                                                ["quantity", "+"]
-                                            );
-                                        }}
-                                    >
-                                        +
-                                    </div>
-                                </div>
-                                <div
-                                    className="container_r_button"
-                                    onClick={() => {
-                                        sendForm(data);
-                                    }}
-                                >
-                                    {lang(textData.button, "dontProdDta")}
-                                    <img
-                                        className="up1 container_r_button_img"
-                                        src={require("../../../img/ar2.png")}
-                                    />
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -675,10 +583,34 @@ const Header = ({
         }
     };
 
+    //---------------------
+    if (red !== null && pocetCat.current !== null) {
+        if (red.offsetParent == pocetCat.current.childNodes[0]) {
+            OpenClosePocet(pocetCat, "cl");
+        }
+    }
+    if (red !== null && end1.current !== null && end2.current !== null) {
+        if (
+            end2.current.parentElement.offsetParent !== red.parentElement ||
+            end2.current.parentElement.offsetParent !== red.parentElement
+        ) {
+            if (end2.current !== red.parentElement) {
+                drop_down_menu_function(end2, box_right_ul, undefined, t2);
+            }
+            if (end1.current !== red.parentElement) {
+                drop_down_menu_function(end1, box_right_ul, undefined, tl);
+            }
+        }
+    }
+
     return (
         <div
             className="main_page__header"
-            style={{ zIndex: 101, position: "relative" }}
+            style={{
+                zIndex: 101,
+
+                width: "100%"
+            }}
         >
             <Modal
                 fun={renderCard(smallCardData.one)}
@@ -706,7 +638,7 @@ const Header = ({
                     <div
                         className="pocet_head"
                         onClick={() => {
-                            closePoc();
+                            OpenClosePocet(pocet, "cl");
                         }}
                     >
                         <div></div>
@@ -756,7 +688,8 @@ const Header = ({
                                                 "/"
                                             )[1] !== "checkout"
                                         ) {
-                                            closePoc();
+                                            OpenClosePocet(pocet, "cl");
+                                            OpenClosePocet(pocetCat, "cl");
                                             black_relocation_change();
                                             propsYakor();
 
@@ -775,80 +708,164 @@ const Header = ({
                 <div
                     className="pocet-two"
                     onClick={() => {
-                        closePoc();
+                        OpenClosePocet(pocet, "cl");
                     }}
                 ></div>
             </div>
-            <div>
-                <div className="header_container">
-                    <div className="header_container__section_1">
-                        <span></span>
-                        <div
-                            onClick={() => {
-                                if (history.location.pathname !== "/") {
-                                    setTimeout(() => {
-                                        black_relocation_change();
-                                        propsYakor();
-                                        setTimeout(() => {
-                                            history.push(`/`);
-                                        }, 450);
-                                    }, 1000);
-                                }
-                            }}
-                            className="header_container__section_1_center-box"
-                        ></div>
+            <div className="pocet pocetCat" ref={pocetCat}>
+                <div className="pocet-one">
+                    <div
+                        style={{ textAlign: "right" }}
+                        onClick={() => {
+                            OpenClosePocet(pocetCat, "cl");
+                        }}
+                    >
+                        Clear X
                     </div>
-                    <div className="header_container__section_2">
+                    <div className="pocet_body">
                         <Cat
                             category={category}
                             head={true}
                             textData={textData}
                             black_relocation_change={black_relocation_change}
                             propsYakor={propsYakor}
+                            setClose_pocetCat_change={setClose_pocetCat_change}
                             lang={lang}
+                            small={true}
                         />
                     </div>
-                    <div className="header_container__section_3">
-                        <div className="header_container__section_3-box-right">
-                            <div className="section_3-box-right">
-                                <div
-                                    className="box-right_ul"
-                                    ref={box_right_ul}
-                                >
+                </div>
+                <div
+                    className="pocet-two"
+                    onClick={() => {
+                        OpenClosePocet(pocetCat, "cl");
+                    }}
+                ></div>
+            </div>
+            <div>
+                {windowWidth > 1100 ? (
+                    <div className="header_container">
+                        <div className="header_container__section_1">
+                            <span></span>
+                            <div
+                                onClick={() => {
+                                    if (history.location.pathname !== "/") {
+                                        setTimeout(() => {
+                                            black_relocation_change();
+                                            propsYakor();
+                                            setTimeout(() => {
+                                                history.push(`/`);
+                                            }, 450);
+                                        }, 1000);
+                                    }
+                                }}
+                                className="header_container__section_1_center-box"
+                            >
+                                {" "}
+                                <div className="Container_box">
+                                    {" "}
+                                    <div className="box_title">
+                                        <h1>White</h1>
+                                        <h1>Black</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="header_container__section_2">
+                            <Cat
+                                category={category}
+                                head={true}
+                                textData={textData}
+                                black_relocation_change={
+                                    black_relocation_change
+                                }
+                                propsYakor={propsYakor}
+                                lang={lang}
+                                small={false}
+                            />
+                        </div>
+                        <div className="header_container__section_3">
+                            <div className="header_container__section_3-box-right">
+                                <div className="section_3-box-right">
                                     <div
-                                        className="box-right_li"
-                                        onClick={() => {
-                                            end1.current.classList.add(
-                                                "active"
-                                            );
-
-                                            drop_down_menu_function(
-                                                end2,
-                                                box_right_ul,
-                                                undefined,
-                                                t2
-                                            );
-                                            drop_down_menu_function(
-                                                end1,
-                                                box_right_ul,
-                                                end1.current.classList[1],
-                                                tl
-                                            );
-                                        }}
+                                        className="box-right_ul"
+                                        ref={box_right_ul}
                                     >
-                                        {CurrentCurrency}
                                         <div
-                                            ref={end1}
-                                            className="box-right_li_end_1"
+                                            className="box-right_li"
+                                            onClick={() => {
+                                                end1.current.classList.add(
+                                                    "active"
+                                                );
+
+                                                drop_down_menu_function(
+                                                    end2,
+                                                    box_right_ul,
+                                                    undefined,
+                                                    t2
+                                                );
+                                                drop_down_menu_function(
+                                                    end1,
+                                                    box_right_ul,
+                                                    end1.current.classList[1],
+                                                    tl
+                                                );
+                                            }}
                                         >
-                                            {currency !== undefined &&
-                                                currency !== null &&
-                                                Object.keys(currency).map(
+                                            {CurrentCurrency}
+                                            <div
+                                                ref={end1}
+                                                className="box-right_li_end_1"
+                                            >
+                                                {currency !== undefined &&
+                                                    currency !== null &&
+                                                    Object.keys(currency).map(
+                                                        (i) => (
+                                                            <div
+                                                                key={i}
+                                                                onClick={() => {
+                                                                    ChangeCurrentCurrency(
+                                                                        i
+                                                                    );
+                                                                }}
+                                                            >
+                                                                {i}
+                                                            </div>
+                                                        )
+                                                    )}
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="box-right_li"
+                                            onClick={() => {
+                                                end2.current.classList.add(
+                                                    "active"
+                                                );
+                                                drop_down_menu_function(
+                                                    end1,
+                                                    box_right_ul,
+                                                    undefined,
+                                                    tl
+                                                );
+                                                drop_down_menu_function(
+                                                    end2,
+                                                    box_right_ul,
+                                                    end2.current.classList[1],
+                                                    t2
+                                                );
+                                            }}
+                                        >
+                                            {["RUS", "UKR", "ENG"][langNum]}
+                                            <div
+                                                ref={end2}
+                                                className="box-right_li_end_2"
+                                            >
+                                                {["RUS", "UKR", "ENG"].map(
                                                     (i) => (
                                                         <div
                                                             key={i}
                                                             onClick={() => {
-                                                                ChangeCurrentCurrency(
+                                                                ChangeCurrentLang(
                                                                     i
                                                                 );
                                                             }}
@@ -857,117 +874,274 @@ const Header = ({
                                                         </div>
                                                     )
                                                 )}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div
-                                        className="box-right_li"
-                                        onClick={() => {
-                                            end2.current.classList.add(
-                                                "active"
-                                            );
-                                            drop_down_menu_function(
-                                                end1,
-                                                box_right_ul,
-                                                undefined,
-                                                tl
-                                            );
-                                            drop_down_menu_function(
-                                                end2,
-                                                box_right_ul,
-                                                end2.current.classList[1],
-                                                t2
-                                            );
-                                        }}
-                                    >
-                                        {["RUS", "UKR", "ENG"][langNum]}
-                                        <div
-                                            ref={end2}
-                                            className="box-right_li_end_2"
-                                        >
-                                            {["RUS", "UKR", "ENG"].map((i) => (
-                                                <div
-                                                    key={i}
-                                                    onClick={() => {
-                                                        ChangeCurrentLang(i);
-                                                    }}
-                                                >
-                                                    {i}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
 
-                                    <div className="box-right_li " ref={ed}>
-                                        <div
-                                            className="buntons_wrap"
-                                            onClick={() => {
-                                                if (!isLoggedIn) {
-                                                    hieDiv();
-                                                    setAct((prevState) => {
+                                        <div className="box-right_li " ref={ed}>
+                                            <div
+                                                className="buntons_wrap"
+                                                onClick={() => {
+                                                    if (!isLoggedIn) {
+                                                        hieDiv();
+                                                        setAct((prevState) => {
+                                                            if (
+                                                                prevState.two ==
+                                                                null
+                                                            ) {
+                                                                return {
+                                                                    ...prevState,
+                                                                    two: true
+                                                                };
+                                                            }
+                                                            if (
+                                                                typeof prevState.two ==
+                                                                "boolean"
+                                                            ) {
+                                                                return {
+                                                                    ...prevState,
+                                                                    two: !prevState.two
+                                                                };
+                                                            }
+                                                        });
+                                                    } else {
                                                         if (
-                                                            prevState.two ==
-                                                            null
+                                                            history.location
+                                                                .pathname !==
+                                                            "/user/"
                                                         ) {
-                                                            return {
-                                                                ...prevState,
-                                                                two: true
-                                                            };
-                                                        }
-                                                        if (
-                                                            typeof prevState.two ==
-                                                            "boolean"
-                                                        ) {
-                                                            return {
-                                                                ...prevState,
-                                                                two: !prevState.two
-                                                            };
-                                                        }
-                                                    });
-                                                } else {
-                                                    if (
-                                                        history.location
-                                                            .pathname !==
-                                                        "/user/"
-                                                    ) {
-                                                        setTimeout(() => {
-                                                            black_relocation_change();
-                                                            propsYakor();
                                                             setTimeout(() => {
-                                                                history.push(
-                                                                    `/user/`
+                                                                black_relocation_change();
+                                                                propsYakor();
+                                                                setTimeout(
+                                                                    () => {
+                                                                        history.push(
+                                                                            `/user/`
+                                                                        );
+                                                                    },
+                                                                    450
                                                                 );
-                                                            }, 450);
-                                                        }, 1000);
+                                                            }, 1000);
+                                                        }
                                                     }
-                                                }
+                                                }}
+                                            >
+                                                <img
+                                                    src={require("../../img/user.png")}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="box-right_li"
+                                            onClick={() => {
+                                                OpenClosePocet(pocet);
                                             }}
                                         >
                                             <img
-                                                src={require("../../../img/user.png")}
+                                                src={require("../../img/bas.png")}
                                             />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="box-right_li"
-                                        onClick={() => {
-                                            no_scroll();
-                                        }}
-                                    >
-                                        <img
-                                            src={require("../../../img/bas.png")}
-                                        />
-                                        <div>
-                                            {" "}
-                                            {Finalcost() == 0.0
-                                                ? ""
-                                                : Finalcost()}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="header_container">
+                        <div className="header_container__section_3">
+                            <div
+                                className="header_container__section_3-box-left"
+                                onClick={() => {
+                                    if (history.location.pathname !== "/") {
+                                        setTimeout(() => {
+                                            black_relocation_change();
+                                            propsYakor();
+                                            setTimeout(() => {
+                                                history.push(`/`);
+                                            }, 450);
+                                        }, 1000);
+                                    }
+                                }}
+                            >
+                                <div className="Container_box">
+                                    {" "}
+                                    <div className="box_title">
+                                        <h1>White</h1>
+                                        <h1>Black</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="header_container__section_3-box-right">
+                                <div className="section_3-box-right">
+                                    <div
+                                        className="box-right_ul"
+                                        ref={box_right_ul}
+                                    >
+                                        <div
+                                            className="box-right_li"
+                                            onClick={() => {
+                                                end1.current.classList.add(
+                                                    "active"
+                                                );
+
+                                                drop_down_menu_function(
+                                                    end2,
+                                                    box_right_ul,
+                                                    undefined,
+                                                    t2
+                                                );
+                                                drop_down_menu_function(
+                                                    end1,
+                                                    box_right_ul,
+                                                    end1.current.classList[1],
+                                                    tl
+                                                );
+                                            }}
+                                        >
+                                            {CurrentCurrency}
+                                            <div
+                                                ref={end1}
+                                                className="box-right_li_end_1"
+                                            >
+                                                {currency !== undefined &&
+                                                    currency !== null &&
+                                                    Object.keys(currency).map(
+                                                        (i) => (
+                                                            <div
+                                                                key={i}
+                                                                onClick={() => {
+                                                                    ChangeCurrentCurrency(
+                                                                        i
+                                                                    );
+                                                                }}
+                                                            >
+                                                                {i}
+                                                            </div>
+                                                        )
+                                                    )}
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="box-right_li"
+                                            onClick={() => {
+                                                end2.current.classList.add(
+                                                    "active"
+                                                );
+                                                drop_down_menu_function(
+                                                    end1,
+                                                    box_right_ul,
+                                                    undefined,
+                                                    tl
+                                                );
+                                                drop_down_menu_function(
+                                                    end2,
+                                                    box_right_ul,
+                                                    end2.current.classList[1],
+                                                    t2
+                                                );
+                                            }}
+                                        >
+                                            {["RUS", "UKR", "ENG"][langNum]}
+                                            <div
+                                                ref={end2}
+                                                className="box-right_li_end_2"
+                                            >
+                                                {["RUS", "UKR", "ENG"].map(
+                                                    (i) => (
+                                                        <div
+                                                            key={i}
+                                                            onClick={() => {
+                                                                ChangeCurrentLang(
+                                                                    i
+                                                                );
+                                                            }}
+                                                        >
+                                                            {i}
+                                                        </div>
+                                                    )
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="box-right_li " ref={ed}>
+                                            <div
+                                                className="buntons_wrap"
+                                                onClick={() => {
+                                                    if (!isLoggedIn) {
+                                                        hieDiv();
+                                                        setAct((prevState) => {
+                                                            if (
+                                                                prevState.two ==
+                                                                null
+                                                            ) {
+                                                                return {
+                                                                    ...prevState,
+                                                                    two: true
+                                                                };
+                                                            }
+                                                            if (
+                                                                typeof prevState.two ==
+                                                                "boolean"
+                                                            ) {
+                                                                return {
+                                                                    ...prevState,
+                                                                    two: !prevState.two
+                                                                };
+                                                            }
+                                                        });
+                                                    } else {
+                                                        if (
+                                                            history.location
+                                                                .pathname !==
+                                                            "/user/"
+                                                        ) {
+                                                            setTimeout(() => {
+                                                                black_relocation_change();
+                                                                propsYakor();
+                                                                setTimeout(
+                                                                    () => {
+                                                                        history.push(
+                                                                            `/user/`
+                                                                        );
+                                                                    },
+                                                                    450
+                                                                );
+                                                            }, 1000);
+                                                        }
+                                                    }
+                                                }}
+                                            >
+                                                <img
+                                                    src={require("../../img/user.png")}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="box-right_li"
+                                            onClick={() => {
+                                                OpenClosePocet(pocet);
+                                            }}
+                                        >
+                                            <img
+                                                src={require("../../img/bas.png")}
+                                            />
+                                        </div>
+                                        <div
+                                            className="box-right_li"
+                                            onClick={() => {
+                                                OpenClosePocet(pocetCat);
+                                            }}
+                                            style={{
+                                                transform: " rotate(-90deg)"
+                                            }}
+                                        >
+                                            |||
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

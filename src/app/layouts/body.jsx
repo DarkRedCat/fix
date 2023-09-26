@@ -120,7 +120,11 @@ const Body = ({
                             : 404}
                     </h1>
                 </div>
-                <div className="category_page_container">
+                <div
+                    className={`category_page_container  ${
+                        data.length < 3 ? "category_page_container_js_c" : ""
+                    } `}
+                >
                     {data.map((e) => (
                         <Card
                             key={e._id}
