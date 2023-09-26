@@ -101,7 +101,7 @@ function App() {
 
     setTimeout(() => {
         document.body.classList.add("body_bg");
-    }, 100);
+    }, 200);
 
     const ChangeCurrency = (num, variableСurrency) => {
         let newNumm = 1;
