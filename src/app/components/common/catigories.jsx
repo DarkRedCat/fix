@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import history1 from "../../utils/history";
 
@@ -14,6 +14,7 @@ const Cat = ({
     textData,
     lang,
     black_relocation_change,
+    black_relocation,
     setClose_pocetCat_change,
     propsYakor,
     small
@@ -27,6 +28,8 @@ const Cat = ({
     const up = useRef(null);
     const t3 = useRef(timeline);
     const red = useContext(UserContext);
+    const [ActLi, setActLi] = useState(null);
+    const allcal = useRef(null);
     const drop_down_menu_function = (el, app, act) => {
         const elClass = `.${el.current.classList[0]}`;
         if (act !== undefined) {
@@ -70,19 +73,34 @@ const Cat = ({
             return () => ctx.revert();
         }
     };
+    useEffect(() => {
+        const arr = [...allcal.current.children[0].childNodes];
+
+        arr.map((m) => {
+            if (m.childNodes[0] !== undefined) {
+                if (ActLi == m.childNodes[0]) {
+                    m.childNodes[0].style.pointerEvents = "none";
+                } else {
+                    m.childNodes[0].style.pointerEvents = "auto";
+                }
+            }
+        });
+    }, [ActLi]);
     const renderCat = (i, small) => {
         if (small) {
             return (
                 <div key={i} className="cat__section_2_li">
                     <div
-                        onClick={() => {
+                        onClick={(e) => {
                             if (
                                 history1.location.pathname.split("/")[2] !== i
                             ) {
+                                setActLi(e.target);
+                                propsYakor();
                                 setTimeout(() => {
                                     setClose_pocetCat_change();
                                     black_relocation_change();
-                                    propsYakor();
+                                 
                                     setTimeout(() => {
                                         history1.push(`/cat/${i}/`);
                                     }, 450);
@@ -100,20 +118,21 @@ const Cat = ({
         } else {
             if (head) {
                 catNum = catNum + 1;
-
                 if (catNum < 11) {
                     return (
                         <div key={i} className="cat__section_2_li">
                             <div
-                                onClick={() => {
+                                onClick={(e) => {
                                     if (
                                         history1.location.pathname.split(
                                             "/"
                                         )[2] !== i
                                     ) {
+                                        setActLi(e.target);
+                                        propsYakor();
                                         setTimeout(() => {
                                             black_relocation_change();
-                                            propsYakor();
+                                            
                                             setTimeout(() => {
                                                 history1.push(`/cat/${i}/`);
                                             }, 450);
@@ -135,7 +154,6 @@ const Cat = ({
                                 className="li"
                                 onClick={(e) => {
                                     df.current.classList.toggle("active");
-
                                     drop_down_menu_function(
                                         df,
                                         app,
@@ -161,15 +179,17 @@ const Cat = ({
                                 {delArr.map((ic) => (
                                     <div
                                         key={ic}
-                                        onClick={() => {
+                                        onClick={(e) => {
                                             if (
                                                 history1.location.pathname.split(
                                                     "/"
                                                 )[2] !== i
                                             ) {
+                                                propsYakor();
                                                 setTimeout(() => {
                                                     black_relocation_change();
-                                                    propsYakor();
+                                                    setActLi(e.target);
+                                                 
                                                     setTimeout(() => {
                                                         history1.push(
                                                             `/cat/${i}/`
@@ -191,31 +211,32 @@ const Cat = ({
                     );
                 }
             } else {
-                return (
-                    <div
-                        key={i}
-                        className="cat__section_2_li"
-                        onClick={() => {
-                            if (
-                                history1.location.pathname.split("/")[2] !== i
-                            ) {
-                                setTimeout(() => {
-                                    black_relocation_change();
-                                    propsYakor();
-                                    setTimeout(() => {
-                                        history1.push(`/cat/${i}/`);
-                                    }, 450);
-                                }, 1000);
-                            }
-                        }}
-                    >
-                        <div className="li">
-                            {textData.cat.map(
-                                (k) => i == k[2] && lang(k, "dontProdDta")
-                            )}
-                        </div>
-                    </div>
-                );
+                return "";
+                // return (
+                //     <div
+                //         key={i}
+                //         className="cat__section_2_li"
+                //         onClick={() => {
+                //             if (
+                //                 history1.location.pathname.split("/")[2] !== i
+                //             ) {
+                //                 setTimeout(() => {
+                //                     black_relocation_change();
+                //                     propsYakor();
+                //                     setTimeout(() => {
+                //                         history1.push(`/cat/${i}/`);
+                //                     }, 450);
+                //                 }, 1000);
+                //             }
+                //         }}
+                //     >
+                //         <div className="li">
+                //             {textData.cat.map(
+                //                 (k) => i == k[2] && lang(k, "dontProdDta")
+                //             )}
+                //         </div>
+                //     </div>
+                // );
             }
         }
     };
@@ -224,69 +245,76 @@ const Cat = ({
             drop_down_menu_function(df, app);
         }
     }
+
     return (
-        <>
+        <div ref={allcal}>
             {small ? (
-                <>
-                    {" "}
+                <div>
                     {cat.map((i) => renderCat(i, true))}{" "}
                     <div
                         className="cat__section_2_li"
-                        onClick={() => {
-                            setTimeout(() => {
-                                if (
-                                    history1.location.pathname.split("/")[1] !==
-                                    "faq"
-                                ) {
+                        onClick={(e) => {
+                            if (
+                                history1.location.pathname.split("/")[1] !==
+                                "faq"
+                            ) {
+                                propsYakor();
+
+                                setTimeout(() => {
                                     black_relocation_change();
-                                    propsYakor();
+                                    setActLi(e.target);
+
                                     setTimeout(() => {
                                         history1.push(`/faq/`);
                                     }, 450);
-                                }
-                            }, 1000);
+                                }, 1000);
+                            }
                         }}
                     >
                         <div className="li">FAQ</div>
                     </div>
                     <div
                         className="cat__section_2_li"
-                        onClick={() => {
-                            setTimeout(() => {
-                                if (
-                                    history1.location.pathname.split("/")[1] !==
-                                    "faq"
-                                ) {
+                        onClick={(e) => {
+                            if (
+                                history1.location.pathname.split("/")[1] !==
+                                "faq"
+                            ) {
+                                propsYakor();
+
+                                setTimeout(() => {
                                     black_relocation_change();
-                                    propsYakor();
+                                    setActLi(e.target);
+
                                     setTimeout(() => {
                                         history1.push(`/faq/`);
                                     }, 450);
-                                }
-                            }, 1000);
+                                }, 1000);
+                            }
                         }}
                     >
                         <div className="li">You order</div>
                     </div>
-                </>
+                </div>
             ) : (
                 <div className="cat__section_2_ul">
                     {cat.map((i) => renderCat(i))}
                     <div
                         className="cat__section_2_li"
-                        onClick={() => {
-                            setTimeout(() => {
-                                if (
-                                    history1.location.pathname.split("/")[1] !==
-                                    "faq"
-                                ) {
+                        onClick={(e) => {
+                            if (
+                                history1.location.pathname.split("/")[1] !==
+                                "faq"
+                            ) {
+                                propsYakor();
+                                setTimeout(() => {
                                     black_relocation_change();
-                                    propsYakor();
+                                    setActLi(e.target);
                                     setTimeout(() => {
                                         history1.push(`/faq/`);
                                     }, 450);
-                                }
-                            }, 1000);
+                                }, 1000);
+                            }
                         }}
                     >
                         <div className="li">FAQ</div>
@@ -301,7 +329,7 @@ const Cat = ({
                     )}
                 </div>
             )}
-        </>
+        </div>
     );
 };
 export default Cat;

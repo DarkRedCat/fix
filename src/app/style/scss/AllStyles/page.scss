@@ -29,7 +29,7 @@
 }
 .main_page,
 .category_page {
-    min-height: calc(100vh - 206px);
+    min-height: calc(100vh - 173px);
     position: relative;
 }
 .category_page_container {
@@ -45,5 +45,8 @@
     background-color: $b;
 }
 .no_scroll {
+    overflow: hidden;
+}
+.no_scroll_black {
     overflow: hidden;
 }

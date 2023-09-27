@@ -102,8 +102,10 @@ const Checkout = ({
     const black_relocation_close_function_first_page_launch = () => {
         const ctx = gsap.context(() => {
             tl.current
-
                 .to(".black_relocation", {
+                    function() {
+                        document.body.classList.add("no_scroll_black");
+                    },
                     duration: 0,
                     display: "block",
                     opacity: 1
@@ -115,8 +117,10 @@ const Checkout = ({
                 })
                 .to(".black_relocation", {
                     duration: 0,
-
-                    display: "none"
+                    display: "none",
+                    function() {
+                        document.body.classList.remove("no_scroll_black");
+                    }
                 });
         }, app.current);
         return () => ctx.revert();
@@ -125,6 +129,9 @@ const Checkout = ({
         const ctx = gsap.context(() => {
             tl.current
                 .to(".black_relocation", {
+                    function() {
+                        document.body.classList.add("no_scroll_black");
+                    },
                     duration: 0,
                     opacity: 0,
                     display: "none"
@@ -142,7 +149,10 @@ const Checkout = ({
                 .to(".black_relocation", {
                     duration: 0,
 
-                    display: "none"
+                    display: "none",
+                    function() {
+                        document.body.classList.remove("no_scroll_black");
+                    }
                 });
         }, app.current);
         return () => ctx.revert();

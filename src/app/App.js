@@ -25,6 +25,7 @@ export const LangContext = createContext();
 
 function App() {
     const isLoading = useSelector(getCategoryLoadingStatus());
+    const [firstRender, setFirstRender] = useState(false);
     const category = useSelector(getCategory());
     const [click, setClick] = useState(null);
     const [changeSendButton, setChangeSendButton] = useState(null);
@@ -97,12 +98,11 @@ function App() {
             SetCurrentLang(JSON.parse(d).data.lang);
             SetCurrentCurrency(JSON.parse(d).data.CurrentCurrency);
         }
+        document.body.classList.add("no_scroll_black");
     }, []);
-
-    setTimeout(() => {
-        document.body.classList.add("body_bg");
-    }, 200);
-
+    const FunSetFirstRender = () => {
+        setFirstRender(true);
+    };
     const ChangeCurrency = (num, variableСurrency) => {
         let newNumm = 1;
         const cNumm = Number(num);
@@ -280,6 +280,10 @@ function App() {
                                                 black_relocation={
                                                     black_relocation
                                                 }
+                                                FunSetFirstRender={
+                                                    FunSetFirstRender
+                                                }
+                                                firstRender={firstRender}
                                                 {...props}
                                             />
                                         )}

@@ -88,7 +88,10 @@ const User = ({ black_relocation }) => {
                 .to(".black_relocation", {
                     duration: 0,
                     display: "block",
-                    opacity: 1
+                    opacity: 1,
+                    function() {
+                        document.body.classList.add("no_scroll_black");
+                    }
                 })
                 .to(".black_relocation", {
                     duration: 1.5,
@@ -97,7 +100,10 @@ const User = ({ black_relocation }) => {
                 .to(".black_relocation", {
                     duration: 0,
 
-                    display: "none"
+                    display: "none",
+                    function() {
+                        document.body.classList.remove("no_scroll_black");
+                    }
                 });
         }, app.current);
         return () => ctx.revert();
@@ -108,7 +114,10 @@ const User = ({ black_relocation }) => {
                 .to(".black_relocation", {
                     duration: 0,
                     opacity: 0,
-                    display: "none"
+                    display: "none",
+                    function() {
+                        document.body.classList.add("no_scroll_black");
+                    }
                 })
                 .to(".black_relocation", {
                     duration: 0.5,
@@ -123,7 +132,10 @@ const User = ({ black_relocation }) => {
                 .to(".black_relocation", {
                     duration: 0,
 
-                    display: "none"
+                    display: "none",
+                    function() {
+                        document.body.classList.remove("no_scroll_black");
+                    }
                 });
         }, app.current);
         return () => ctx.revert();

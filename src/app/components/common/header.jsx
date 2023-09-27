@@ -11,11 +11,11 @@ import { getIsLoggedIn } from "../../store/users";
 import { getProductsbyId } from "../../store/product";
 import { LangContext } from "../../App";
 import history from "../../utils/history";
-
+import { Sling as Hamburger } from "hamburger-react";
 const timeline = gsap.timeline({});
-
 const timeline2 = gsap.timeline({});
-
+const timeline3 = gsap.timeline({});
+const timeline4 = gsap.timeline({});
 const Header = ({
     category,
     changeSendButton,
@@ -54,9 +54,11 @@ const Header = ({
     const pocetCat = useRef(null);
     const tl = useRef(timeline);
     const t2 = useRef(timeline2);
+    const t3 = useRef(timeline3);
+    const t4 = useRef(timeline4);
     const box_right_ul = useRef(null);
     const red = useContext(UserContext);
-
+    const [hamburger, setHamburger] = useState(false);
     const cart = JSON.parse(localStorage.getItem("cart"));
 
     const [act, setAct] = useState({
@@ -84,9 +86,10 @@ const Header = ({
         OpenClosePocet(pocet, "cl");
         OpenClosePocet(pocetCat, "cl");
     }, [close_pocetCat]);
+
     useEffect(() => {
         if (changeSendButton !== null) {
-            OpenClosePocet(pocet, "cl");
+            OpenClosePocet(pocet);
             OpenClosePocet(pocetCat, "cl");
             setCart2({ ...JSON.parse(localStorage.getItem("cart")) });
         }
@@ -115,31 +118,31 @@ const Header = ({
     const OpenClosePocet = (app, cl) => {
         if (cl !== "cl") {
             const ctx = gsap.context(() => {
-                t2.current.to(".pocet-two", {
+                t4.current.to(".pocet-two", {
                     function() {
                         document.body.classList.add("no_scroll");
                     },
                     duration: 0,
                     display: "block"
                 });
-                tl.current.to(".pocet-one", {
+                t3.current.to(".pocet-one", {
                     right: 0
                 });
-                t2.current.to(".pocet-two", {
+                t4.current.to(".pocet-two", {
                     opacity: 1
                 });
             }, app.current);
             return () => ctx.revert();
         } else {
             const ctx = gsap.context(() => {
-                tl.current.to(".pocet-one", {
+                t3.current.to(".pocet-one", {
                     duration: 0.6,
                     right: "-300px"
                 });
-                t2.current.to(".pocet-two", {
+                t4.current.to(".pocet-two", {
                     opacity: 0
                 });
-                t2.current.to(".pocet-two", {
+                t4.current.to(".pocet-two", {
                     duration: 0,
                     display: "none",
                     function() {
@@ -603,6 +606,9 @@ const Header = ({
         }
     }
 
+    //----
+    const [isOpen, setOpen] = useState(false);
+    //----
     return (
         <div
             className="main_page__header"
@@ -682,22 +688,23 @@ const Header = ({
                         <div className="block_button">
                             <div
                                 onClick={() => {
-                                    setTimeout(() => {
-                                        if (
-                                            history.location.pathname.split(
-                                                "/"
-                                            )[1] !== "checkout"
-                                        ) {
+                                    if (
+                                        history.location.pathname.split(
+                                            "/"
+                                        )[1] !== "checkout"
+                                    ) {
+                                        propsYakor();
+
+                                        setTimeout(() => {
                                             OpenClosePocet(pocet, "cl");
                                             OpenClosePocet(pocetCat, "cl");
                                             black_relocation_change();
-                                            propsYakor();
 
                                             setTimeout(() => {
                                                 history.push(`/checkout/`);
                                             }, 450);
-                                        }
-                                    }, 1000);
+                                        }, 1000);
+                                    }
                                 }}
                             >
                                 {lang(textData.CheckOut, "dontProdDta")}
@@ -709,6 +716,7 @@ const Header = ({
                     className="pocet-two"
                     onClick={() => {
                         OpenClosePocet(pocet, "cl");
+                        setHamburger(false);
                     }}
                 ></div>
             </div>
@@ -718,6 +726,7 @@ const Header = ({
                         style={{ textAlign: "right" }}
                         onClick={() => {
                             OpenClosePocet(pocetCat, "cl");
+                            setHamburger(false);
                         }}
                     >
                         Clear X
@@ -750,9 +759,10 @@ const Header = ({
                             <div
                                 onClick={() => {
                                     if (history.location.pathname !== "/") {
+                                        propsYakor();
                                         setTimeout(() => {
                                             black_relocation_change();
-                                            propsYakor();
+
                                             setTimeout(() => {
                                                 history.push(`/`);
                                             }, 450);
@@ -779,6 +789,7 @@ const Header = ({
                                 black_relocation_change={
                                     black_relocation_change
                                 }
+                                black_relocation={black_relocation}
                                 propsYakor={propsYakor}
                                 lang={lang}
                                 small={false}
@@ -909,9 +920,10 @@ const Header = ({
                                                                 .pathname !==
                                                             "/user/"
                                                         ) {
+                                                            propsYakor();
                                                             setTimeout(() => {
                                                                 black_relocation_change();
-                                                                propsYakor();
+
                                                                 setTimeout(
                                                                     () => {
                                                                         history.push(
@@ -952,9 +964,10 @@ const Header = ({
                                 className="header_container__section_3-box-left"
                                 onClick={() => {
                                     if (history.location.pathname !== "/") {
+                                        propsYakor();
                                         setTimeout(() => {
                                             black_relocation_change();
-                                            propsYakor();
+
                                             setTimeout(() => {
                                                 history.push(`/`);
                                             }, 450);
@@ -1128,13 +1141,20 @@ const Header = ({
                                         <div
                                             className="box-right_li"
                                             onClick={() => {
-                                                OpenClosePocet(pocetCat);
+                                                setTimeout(() => {}, 10);
                                             }}
                                             style={{
-                                                transform: " rotate(-90deg)"
+                                                padding: "0",
+                                                transform: "scale(.7)"
                                             }}
                                         >
-                                            |||
+                                            <Hamburger
+                                                toggled={hamburger}
+                                                onToggle={(toggled) => {
+                                                    setHamburger(true);
+                                                    OpenClosePocet(pocetCat);
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                 </div>

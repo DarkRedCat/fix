@@ -1,4 +1,4 @@
 {
-    "apiEndpoint": "https://error-server-six.vercel.app/api",
+    "apiEndpoint": "http://localhost:8080/api",
     "isFireBase": false
 }

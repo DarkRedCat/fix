@@ -585,7 +585,7 @@ table {
     }
 }
 .black_relocation {
-    height: calc(100% + 173px);
+    height: calc(100vh + 173px);
     background: #111113;
     width: 100%;
 
@@ -593,10 +593,10 @@ table {
     z-index: 100;
 }
 .black_relocation_2 {
-    height: calc(100% + 173px);
+    height: calc(100vh + 173px);
     background: #111113;
     width: 100%;
     top: -173px;
     position: absolute;
-    z-index: 100;
+    z-index: 0;
 }

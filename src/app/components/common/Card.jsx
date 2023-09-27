@@ -32,11 +32,14 @@ const Card = ({
             <div
                 className="card_container"
                 onClick={() => {
-                    black_relocation_change();
                     propsYakor();
+
                     setTimeout(() => {
-                        history.push(`/product/${_id}`);
-                    }, 450);
+                        black_relocation_change();
+                        setTimeout(() => {
+                            history.push(`/product/${_id}`);
+                        }, 450);
+                    }, 1000);
                 }}
             >
                 <div className="card_container__head">
