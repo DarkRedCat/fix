@@ -23,7 +23,7 @@ body {
 }
 .body_bg {
     background-image: url("../../../img//bg2.jpg");
-    background-size: cover;
+    background-size: contain;
 }
 
 body::-webkit-scrollbar {
