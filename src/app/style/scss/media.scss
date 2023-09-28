@@ -268,35 +268,32 @@
     .header_container {
         display: none;
     }
-    // .prod_container_r {
-    //     .container_r_button {
-    //         font-size: 70%;
-    //         padding: 0 15px;
-    //     }
-    // }
-    // .box-right_ul {
-    //     padding-right: 10px;
-    // }
+    .prod_container_r {
+        .container_r_button {
+            font-size: 70%;
+            padding: 0 15px;
+        }
+    }
 
-    // .Container_box {
-    //     left: 70px;
-    //     .box_title {
-    //         width: 130px;
-    //         h1 {
-    //             font-size: 30px;
-    //         }
-    //     }
-    // }
+    .Container_box {
+        left: 70px;
+        .box_title {
+            width: 130px;
+            h1 {
+                font-size: 30px;
+            }
+        }
+    }
 }
 @media (max-width: 350px) {
-    // .prod_container_mod {
-    //     .prod_container_body {
-    //         padding: 0px;
-    //         .container_r_size {
-    //             div {
-    //                 margin-right: 5px;
-    //             }
-    //         }
-    //     }
-    // }
+    .prod_container_mod {
+        .prod_container_body {
+            padding: 0px;
+            .container_r_size {
+                div {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
 }
