@@ -305,6 +305,15 @@
             margin-bottom: 20px;
         }
     }
+    .Container_box {
+        left: 85px;
+        .box_title {
+            width: 155px;
+            h1 {
+                font-size: 30px;
+            }
+        }
+    }
 }
 @media (max-width: 430px) {
     .prod_container_r {
