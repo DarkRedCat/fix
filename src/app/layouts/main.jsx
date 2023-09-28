@@ -100,6 +100,7 @@ const Main = ({
     if (!firstRender) {
         style = { zIndex: 1100 };
     }
+
     return (
         <div className="main_page container">
             <div ref={app}>

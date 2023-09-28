@@ -600,3 +600,34 @@ table {
     position: absolute;
     z-index: 0;
 }
+.black_relocation_3 {
+    height: calc(100vh);
+    background: #111113;
+    width: 100%;
+    position: absolute;
+    z-index: 1000000;
+
+    .Container_box {
+        top: 40%;
+        opacity: 0;
+        transform: scale(2) translate(-25%, 0);
+        left: 50%;
+        .box_title {
+            h1 {
+                &:nth-child(2) {
+                    &:hover {
+                        -webkit-clip-path: none;
+                        clip-path: none;
+                    }
+                }
+
+                &:nth-child(1) {
+                    &:hover ~ h1 {
+                        -webkit-clip-path: none;
+                        clip-path: none;
+                    }
+                }
+            }
+        }
+    }
+}

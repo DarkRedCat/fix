@@ -18,12 +18,16 @@ import "swiper/components/navigation/navigation.min.css";
 import "swiper/components/pagination/pagination.min.css";
 import val from "./utils/val";
 import textData from "./textData.json";
-import history1 from "./utils/history";
-
+import { gsap } from "gsap";
+import { CustomEase } from "gsap/CustomEase";
+import "gsap/CustomEase";
 export const UserContext = createContext();
 export const LangContext = createContext();
-
+const timeline = gsap.timeline({});
+const timeline2 = gsap.timeline({});
 function App() {
+    const tl = useRef(timeline);
+    const t2 = useRef(timeline2);
     const isLoading = useSelector(getCategoryLoadingStatus());
     const [firstRender, setFirstRender] = useState(false);
     const category = useSelector(getCategory());
@@ -153,12 +157,80 @@ function App() {
         propsYakor();
     }, []);
 
+    ///--------------------------------------------
+    const [redsad, asdasds] = useState(null);
+
+    const dersaq = (i) => {
+        const der = document.body
+            .querySelectorAll(".Container_box")[1]
+            .getBoundingClientRect();
+
+        if (i == "top") {
+            return [der.top];
+        }
+        if (i == "left") {
+            return der.left + der.width / 2;
+        }
+    };
+
+    const app = useRef(null);
+    const black_relocation_close_function_first_page_launch = (left, top) => {
+        const ctx = gsap.context(() => {
+            tl.current
+                .to(".Container_box", {
+                    duration: 1,
+                    opacity: 1
+                })
+
+                .to(".Container_box", {
+                    duration: 0.5,
+                    transform: "scale(1) translate(-50% ,0)",
+                    top: `${top}px`,
+                    left: `${left}px`
+                })
+
+                .to(".black_relocation_3", {
+                    duration: 0.5,
+                    opacity: 0
+                })
+                .to(".black_relocation_3", {
+                    duration: 0,
+                    display: "none"
+                })
+                .to(".Container_box", {
+                    duration: 0,
+                    display: "none",
+                    function() {
+                        document.body.classList.remove("no_scroll_black_2");
+                    }
+                });
+        }, app.current);
+        return () => ctx.revert();
+    };
+    const getPosDiv = () => {
+        black_relocation_close_function_first_page_launch(
+            dersaq("left"),
+            dersaq("top")
+        );
+    };
+
     return (
         <div
             onClick={(e) => {
                 setClick(e.target);
             }}
         >
+            <div ref={app}>
+                <div className="black_relocation_3">
+                    <div className="Container_box">
+                        {" "}
+                        <div className="box_title">
+                            <h1>White</h1>
+                            <h1>Black</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <section ref={yakor}></section>
             <AppLoader>
                 {!isLoading && currency !== null ? (
@@ -187,6 +259,7 @@ function App() {
                                     propsYakor={propsYakor}
                                     ActLi={ActLi}
                                     setActLi={setActLi}
+                                    getPosDiv={getPosDiv}
                                 />
                                 <Switch>
                                     <Route

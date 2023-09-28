@@ -31,6 +31,7 @@ const Header = ({
     setClose_pocetCat_change,
     ActLi,
     setActLi,
+    getPosDiv,
     textData
 }) => {
     const isLoggedIn = useSelector(getIsLoggedIn());
@@ -82,8 +83,38 @@ const Header = ({
     );
 
     useEffect(() => {
+        getPosDiv();
         document.body.classList.remove("no_scroll");
-    }, []);
+
+        // if (
+        //     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        //         navigator.userAgent
+        //     )
+        // ) {
+        //     document.body
+        //         .querySelectorAll(".Container_box")[1]
+        //         .childNodes[1].classList.add("box_title_tel");
+        //     const div =
+        //         document.body.querySelectorAll(".Container_box")[1]
+        //             .childNodes[1].childNodes[1];
+        //     const div1 =
+        //         document.body.querySelectorAll(".Container_box")[1]
+        //             .childNodes[1].childNodes[1];
+
+        //     div.addEventListener("click", (e) => {
+        //         console.log(e.target);
+        //         div.classList.remove("h1_ac_1");
+        //         div.classList.add("h1_ac_2");
+        //     });
+        //     div1.addEventListener("click", (e) => {
+        //         console.log(e.target);
+
+        //         div.classList.remove("h1_ac_2");
+        //         div.classList.add("h1_ac_1");
+        //     });
+        // }
+    });
+
     useEffect(() => {
         OpenClosePocet(pocet, "cl");
         OpenClosePocet(pocetCat, "cl");
@@ -296,6 +327,19 @@ const Header = ({
         );
 
         return ChangeCurrency(Finalcost, CurrentCurrency);
+    };
+    const funClick = (e) => {
+        if (e.target.offsetParent.classList[1] == undefined) {
+            if (e.target.innerHTML == "Black") {
+                e.target.offsetParent.classList.add("box_title_2_act-2");
+            }
+            if (e.target.innerHTML == "White") {
+                e.target.offsetParent.classList.add("box_title_2_act-1");
+            }
+        } else {
+            e.target.offsetParent.classList.remove("box_title_2_act-2");
+            e.target.offsetParent.classList.remove("box_title_2_act-1");
+        }
     };
     const renderPoketCard = (data, id) => {
         return (
@@ -775,13 +819,25 @@ const Header = ({
                                 }}
                                 className="header_container__section_1_center-box"
                             >
-                                {" "}
                                 <div className="Container_box">
-                                    {" "}
-                                    <div className="box_title">
-                                        <h1>White</h1>
-                                        <h1>Black</h1>
-                                    </div>
+                                    {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                                        navigator.userAgent
+                                    ) ? (
+                                        <div
+                                            className="box_title_2"
+                                            onClick={(e) => {
+                                                funClick(e);
+                                            }}
+                                        >
+                                            <h1>White</h1>
+                                            <h1>Black</h1>
+                                        </div>
+                                    ) : (
+                                        <div className="box_title">
+                                            <h1>White</h1>
+                                            <h1>Black</h1>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -982,11 +1038,24 @@ const Header = ({
                                 }}
                             >
                                 <div className="Container_box">
-                                    {" "}
-                                    <div className="box_title">
-                                        <h1>White</h1>
-                                        <h1>Black</h1>
-                                    </div>
+                                    {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                                        navigator.userAgent
+                                    ) ? (
+                                        <div
+                                            className="box_title_2"
+                                            onClick={(e) => {
+                                                funClick(e);
+                                            }}
+                                        >
+                                            <h1>White</h1>
+                                            <h1>Black</h1>
+                                        </div>
+                                    ) : (
+                                        <div className="box_title">
+                                            <h1>White</h1>
+                                            <h1>Black</h1>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="header_container__section_3-box-right">
