@@ -112,10 +112,7 @@
             div {
                 margin: 0;
             }
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-right: 0;
-            padding-left: 0;
+            padding: 10px;
         }
     }
 
@@ -127,7 +124,7 @@
         padding-top: 0;
         padding-bottom: 0;
         height: 40px;
-        padding: 10px;
+        padding: 10px 0;
         border-bottom: 1px solid #dbbbbb63;
     }
     .header_container__section_3 {
