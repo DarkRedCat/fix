@@ -28,6 +28,7 @@ function App() {
     const [firstRender, setFirstRender] = useState(false);
     const category = useSelector(getCategory());
     const [click, setClick] = useState(null);
+    const [ActLi, setActLi] = useState(null);
     const [changeSendButton, setChangeSendButton] = useState(null);
     const clickSendButton = () => {
         setChangeSendButton((prevState) => {
@@ -184,6 +185,8 @@ function App() {
                                         setClose_pocetCat_change
                                     }
                                     propsYakor={propsYakor}
+                                    ActLi={ActLi}
+                                    setActLi={setActLi}
                                 />
                                 <Switch>
                                     <Route
@@ -283,6 +286,7 @@ function App() {
                                                 FunSetFirstRender={
                                                     FunSetFirstRender
                                                 }
+                                                setActLi={setActLi}
                                                 firstRender={firstRender}
                                                 {...props}
                                             />

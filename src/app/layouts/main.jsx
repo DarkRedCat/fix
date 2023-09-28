@@ -4,7 +4,12 @@ import { gsap } from "gsap";
 
 const timeline = gsap.timeline({});
 
-const Main = ({ black_relocation, firstRender, FunSetFirstRender }) => {
+const Main = ({
+    black_relocation,
+    firstRender,
+    FunSetFirstRender,
+    setActLi
+}) => {
     const tl = useRef(timeline);
     const app = useRef(null);
 
@@ -87,6 +92,8 @@ const Main = ({ black_relocation, firstRender, FunSetFirstRender }) => {
             }, 400);
             FunSetFirstRender();
         }
+
+        setActLi("mainPage");
     }, [black_relocation]);
 
     let style = {};

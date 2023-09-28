@@ -29,6 +29,8 @@ const Header = ({
     propsYakor,
     close_pocetCat,
     setClose_pocetCat_change,
+    ActLi,
+    setActLi,
     textData
 }) => {
     const isLoggedIn = useSelector(getIsLoggedIn());
@@ -740,6 +742,8 @@ const Header = ({
                             propsYakor={propsYakor}
                             setClose_pocetCat_change={setClose_pocetCat_change}
                             lang={lang}
+                            ActLi={ActLi}
+                            setActLi={setActLi}
                             small={true}
                         />
                     </div>
@@ -792,6 +796,8 @@ const Header = ({
                                 black_relocation={black_relocation}
                                 propsYakor={propsYakor}
                                 lang={lang}
+                                ActLi={ActLi}
+                                setActLi={setActLi}
                                 small={false}
                             />
                         </div>

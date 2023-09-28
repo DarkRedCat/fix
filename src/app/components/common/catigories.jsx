@@ -17,6 +17,8 @@ const Cat = ({
     black_relocation,
     setClose_pocetCat_change,
     propsYakor,
+    ActLi,
+    setActLi,
     small
 }) => {
     let cat = category[0].Category;
@@ -28,7 +30,7 @@ const Cat = ({
     const up = useRef(null);
     const t3 = useRef(timeline);
     const red = useContext(UserContext);
-    const [ActLi, setActLi] = useState(null);
+
     const allcal = useRef(null);
     const drop_down_menu_function = (el, app, act) => {
         const elClass = `.${el.current.classList[0]}`;
@@ -75,17 +77,25 @@ const Cat = ({
     };
     useEffect(() => {
         const arr = [...allcal.current.children[0].childNodes];
-
-        arr.map((m) => {
-            if (m.childNodes[0] !== undefined) {
-                if (ActLi == m.childNodes[0]) {
-                    m.childNodes[0].style.pointerEvents = "none";
-                } else {
+        if (ActLi == "mainPage") {
+            arr.map((m) => {
+                if (m.childNodes[0] !== undefined) {
                     m.childNodes[0].style.pointerEvents = "auto";
                 }
-            }
-        });
+            });
+        } else {
+            arr.map((m) => {
+                if (m.childNodes[0] !== undefined) {
+                    if (ActLi == m.childNodes[0]) {
+                        m.childNodes[0].style.pointerEvents = "none";
+                    } else {
+                        m.childNodes[0].style.pointerEvents = "auto";
+                    }
+                }
+            });
+        }
     }, [ActLi]);
+
     const renderCat = (i, small) => {
         if (small) {
             return (
@@ -100,7 +110,7 @@ const Cat = ({
                                 setTimeout(() => {
                                     setClose_pocetCat_change();
                                     black_relocation_change();
-                                 
+
                                     setTimeout(() => {
                                         history1.push(`/cat/${i}/`);
                                     }, 450);
@@ -132,7 +142,7 @@ const Cat = ({
                                         propsYakor();
                                         setTimeout(() => {
                                             black_relocation_change();
-                                            
+
                                             setTimeout(() => {
                                                 history1.push(`/cat/${i}/`);
                                             }, 450);
@@ -189,7 +199,7 @@ const Cat = ({
                                                 setTimeout(() => {
                                                     black_relocation_change();
                                                     setActLi(e.target);
-                                                 
+
                                                     setTimeout(() => {
                                                         history1.push(
                                                             `/cat/${i}/`
