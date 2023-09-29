@@ -14,7 +14,7 @@ const Modal = ({ fun, act, cl, className1 }) => {
     const t3 = useRef(timeline3);
     const modalDocum1 = document.querySelectorAll(".modal_cont_log");
     const modalDocum2 = document.querySelectorAll(".modal_cont_log2");
-      const CloseModalImg = document.querySelectorAll(".close");
+    const CloseModalImg = document.querySelectorAll(".close");
 
     const animate = (app, active) => {
         if (active !== undefined) {
@@ -66,9 +66,6 @@ const Modal = ({ fun, act, cl, className1 }) => {
         animate2(app);
         setTimeout(() => {
             document.body.classList.remove("no_scroll");
-            if (app.current) {
-                app.current.classList.remove("modal_active");
-            }
         }, 1000);
     };
     useEffect(() => {
@@ -101,12 +98,6 @@ const Modal = ({ fun, act, cl, className1 }) => {
             }
         }
     }, [act]);
-
-    if (CloseModalImg[0]) {
-        CloseModalImg[0].onclick = function () {
-            closeModal(modalM);
-        };
-    }
 
     return (
         <>

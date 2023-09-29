@@ -74,7 +74,7 @@ const Product = ({
     useEffect(() => {
         setProdData({ [locationName]: defaultData });
     }, [location]);
-
+    const modDiv = useRef(null);
     //--------------------------
     const sendForm = (data) => {
         let prodDataUpdate = {
@@ -97,6 +97,9 @@ const Product = ({
                 JSON.stringify({ [data._id]: prodDataUpdate })
             );
         }
+        setTimeout(() => {
+            modDiv.current.childNodes[0].classList.remove("modal_active");
+        }, 1000);
 
         clickSendButton();
     };
@@ -453,7 +456,7 @@ const Product = ({
                 <div className="black_relocation"></div>
             </div>
             {data !== "null" && allData !== "null" ? (
-                <div className="prod_container">
+                <div className="prod_container" ref={modDiv}>
                     <Modal
                         fun={renderCard(smallCardData.one)}
                         act={act.one}

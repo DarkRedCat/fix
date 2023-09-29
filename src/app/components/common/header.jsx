@@ -12,6 +12,7 @@ import { getProductsbyId } from "../../store/product";
 import { LangContext } from "../../App";
 import history from "../../utils/history";
 import { Sling as Hamburger } from "hamburger-react";
+import { useMediaQuery } from "react-responsive";
 const timeline = gsap.timeline({});
 const timeline2 = gsap.timeline({});
 const timeline3 = gsap.timeline({});
@@ -37,16 +38,16 @@ const Header = ({
     const isLoggedIn = useSelector(getIsLoggedIn());
     const langNum = useContext(LangContext);
     /*------------------ */
-    const [windowWidth, setWindowWidth] = React.useState(window.screen.width);
-    React.useEffect(() => {
-        window.onresize = () => {
-            setWindowWidth(window.screen.width);
-        };
+    // const [windowWidth, setWindowWidth] = React.useState(window.screen.width);
+    // React.useEffect(() => {
+    //     window.onresize = () => {
+    //         setWindowWidth(window.screen.width);
+    //     };
 
-        return () => {
-            window.onresize = false;
-        };
-    }, [windowWidth]);
+    //     return () => {
+    //         window.onresize = false;
+    //     };
+    // }, [windowWidth]);
     /*------------------ */
 
     const ed = useRef(null);
@@ -81,39 +82,10 @@ const Header = ({
             ? JSON.parse(localStorage.getItem("cart"))
             : []
     );
-
     useEffect(() => {
         getPosDiv();
         document.body.classList.remove("no_scroll");
-
-        // if (
-        //     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        //         navigator.userAgent
-        //     )
-        // ) {
-        //     document.body
-        //         .querySelectorAll(".Container_box")[1]
-        //         .childNodes[1].classList.add("box_title_tel");
-        //     const div =
-        //         document.body.querySelectorAll(".Container_box")[1]
-        //             .childNodes[1].childNodes[1];
-        //     const div1 =
-        //         document.body.querySelectorAll(".Container_box")[1]
-        //             .childNodes[1].childNodes[1];
-
-        //     div.addEventListener("click", (e) => {
-        //         console.log(e.target);
-        //         div.classList.remove("h1_ac_1");
-        //         div.classList.add("h1_ac_2");
-        //     });
-        //     div1.addEventListener("click", (e) => {
-        //         console.log(e.target);
-
-        //         div.classList.remove("h1_ac_2");
-        //         div.classList.add("h1_ac_1");
-        //     });
-        // }
-    });
+    }, []);
 
     useEffect(() => {
         OpenClosePocet(pocet, "cl");
@@ -328,17 +300,27 @@ const Header = ({
 
         return ChangeCurrency(Finalcost, CurrentCurrency);
     };
+    const [ChangeMainLogo, SetChangeMainLogo] = useState(null);
     const funClick = (e) => {
         if (e.target.offsetParent.classList[1] == undefined) {
-            if (e.target.innerHTML == "Black") {
-                e.target.offsetParent.classList.add("box_title_2_act-2");
-            }
-            if (e.target.innerHTML == "White") {
-                e.target.offsetParent.classList.add("box_title_2_act-1");
-            }
-        } else {
+            SetChangeMainLogo(1);
+        }
+        if (ChangeMainLogo == 1) {
+            e.target.offsetParent.classList.add("box_title_2_act-2");
+            SetChangeMainLogo(2);
+        }
+
+        if (ChangeMainLogo == 2) {
             e.target.offsetParent.classList.remove("box_title_2_act-2");
+            SetChangeMainLogo(3);
+        }
+        if (ChangeMainLogo == 3) {
+            e.target.offsetParent.classList.add("box_title_2_act-1");
+            SetChangeMainLogo(4);
+        }
+        if (ChangeMainLogo == 4) {
             e.target.offsetParent.classList.remove("box_title_2_act-1");
+            SetChangeMainLogo(1);
         }
     };
     const renderPoketCard = (data, id) => {
@@ -654,6 +636,9 @@ const Header = ({
 
     //----
     const [isOpen, setOpen] = useState(false);
+
+    const isDesktopOrLaptop = useMediaQuery({ query: "(max-width: 1100px)" });
+    // const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
     //----
     return (
         <div
@@ -800,7 +785,7 @@ const Header = ({
                 ></div>
             </div>
             <div>
-                {windowWidth > 1100 ? (
+                {!isDesktopOrLaptop ? (
                     <div className="header_container">
                         <div className="header_container__section_1">
                             <span></span>
