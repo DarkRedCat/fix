@@ -211,6 +211,9 @@
             }
         }
     }
+    .main_page__body-content_img {
+        height: calc(100vh - 67px);
+    }
 }
 @media (max-width: 800px) {
     .category_page_container {
